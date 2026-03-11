@@ -76,10 +76,10 @@ class IdeationEngine {
     let filtered = suggestions;
     if (this.gotchasMemory) {
       try {
-        const knownIssues = await this.gotchasMemory.getAll();
+        const knownIssues = this.gotchasMemory.listGotchas();
         filtered = suggestions.filter((s) => !this.isKnownGotcha(s, knownIssues));
-      } catch {
-        // Ignore
+      } catch (error) {
+        console.warn('[IdeationEngine] Failed to load known gotchas for filtering:', error.message);
       }
     }
 

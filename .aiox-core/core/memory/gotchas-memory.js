@@ -253,6 +253,7 @@ class GotchasMemory extends EventEmitter {
         count: 0,
         firstSeen: now,
         lastSeen: now,
+        timestamps: [],
         samples: [],
         errorPattern: errorData.message,
         category: this._detectCategory(errorData.message + ' ' + (errorData.stack || '')),
@@ -266,9 +267,25 @@ class GotchasMemory extends EventEmitter {
       tracking.samples = [];
     }
 
-    // Update tracking
-    tracking.count++;
+    // Ensure timestamps array exists for entries loaded from disk before this fix
+    if (!Array.isArray(tracking.timestamps)) {
+      tracking.timestamps = [];
+    }
+
+    // Add current timestamp and prune occurrences outside the sliding error window.
+    // This ensures errorWindowMs truly bounds the counted occurrences rather than
+    // relying on inactivity gaps — the previous gap-based reset allowed stale errors
+    // (e.g., at 0h, 20h, 40h) to keep accumulating as long as each repeat landed
+    // just inside the gap boundary.
+    const windowStart = now - this.options.errorWindowMs;
+    tracking.timestamps.push(now);
+    tracking.timestamps = tracking.timestamps.filter((ts) => ts >= windowStart);
+
+    // Recompute derived fields from the pruned sliding window
+    tracking.count = tracking.timestamps.length;
+    tracking.firstSeen = tracking.timestamps.length > 0 ? tracking.timestamps[0] : now;
     tracking.lastSeen = now;
+
     if (tracking.samples.length < 5) {
       tracking.samples.push({
         timestamp: new Date(now).toISOString(),

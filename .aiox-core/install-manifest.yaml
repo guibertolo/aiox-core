@@ -8,7 +8,7 @@
 # - File types for categorization
 #
 version: 5.0.3
-generated_at: "2026-03-11T02:07:59.305Z"
+generated_at: "2026-03-11T12:49:21.536Z"
 generator: scripts/generate-install-manifest.js
 file_count: 1089
 files:
@@ -689,9 +689,9 @@ files:
     type: core
     size: 7755
   - path: core/ideation/ideation-engine.js
-    hash: sha256:0022cd3c1e9f834be277718ef7edb3378950b568a1a85e24df5ed8a55873098b
+    hash: sha256:2ba5de0721a5496e0484a6c68c4a5657998ba509d0e0bfd8957e9c26286dd9cd
     type: core
-    size: 22871
+    size: 22961
   - path: core/ids/circuit-breaker.js
     hash: sha256:8ded35421a12a87c3de36f17ea9987c2c17d27aff1d3bd875813113de224b7f7
     type: core
@@ -789,9 +789,9 @@ files:
     type: core
     size: 8850
   - path: core/memory/gotchas-memory.js
-    hash: sha256:f6a151445aab302116218ff044b1a379adcd9963ddd77e58cd8bc9eb13cd8597
+    hash: sha256:5f10e5111598c23c2ec27cf945c656fd957494895981aa321a9cfe5360c1a8e8
     type: core
-    size: 33294
+    size: 34193
   - path: core/migration/migration-config.yaml
     hash: sha256:c251213b99ce86c9b15311d51a0b464b7fc25179455c4c6c107cae76cf49d1ab
     type: core
@@ -829,9 +829,9 @@ files:
     type: core
     size: 19293
   - path: core/orchestration/condition-evaluator.js
-    hash: sha256:3beeadc14168659bfa6e86a49fa454e7c54ad55d559a09aa8deee423d068b9a4
+    hash: sha256:a896e92c5b49ea187170d17c396ff4d239e7c355a6bc64b7a45a742959086531
     type: core
-    size: 10846
+    size: 11675
   - path: core/orchestration/context-manager.js
     hash: sha256:7bf273723a2c08cb84e670b9d4c55aacec51819b1fbd5f3b0c46c4ccfa2ec192
     type: core

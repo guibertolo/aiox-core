@@ -97,6 +97,17 @@ class ConditionEvaluator {
       // Composite conditions
       has_any_data_to_analyze: () =>
         this.profile.hasDatabase || this.profile.hasFrontend || this.profile.hasBackend,
+
+      // Workflow guidance conditions — human-driven, cannot be inferred from tech
+      // stack profile. Default to true so these optional/iterative steps are not
+      // silently skipped by the fail-safe false introduced in #472.
+      // Each condition describes intent that the executing agent confirms at runtime.
+      user_wants_ai_generation: () => true, // Optional AI UI generation step
+      stories_remaining: () => true, // Repeat story cycle until agent signals done
+      epic_complete: () => true, // Optional epic retrospective step
+      architecture_suggests_prd_changes: () => true, // Optional PRD update after arch review
+      po_checklist_issues: () => true, // Optional fix delegation when PO finds issues
+      user_has_generated_ui: () => true, // Optional project-setup guidance for generated UI
     };
 
     // Check for built-in evaluator
