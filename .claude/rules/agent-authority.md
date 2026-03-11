@@ -69,11 +69,25 @@
 
 ### @aiox-master — Framework Governance
 
+**Default behavior: DELEGATE to the exclusive agent when one exists.**
+
 | Capability | Details |
 |-----------|---------|
-| Execute ANY task directly | No restrictions |
-| Framework governance | Constitutional enforcement |
-| Override agent boundaries | When necessary for framework health |
+| Framework governance tasks | Execute directly (meta-ops, orchestration, framework health) |
+| Tasks with a mapped exclusive agent | **DELEGATE by default** — route to the owning agent |
+| Override agent boundaries | Only with explicit `--force-execute` flag or workflow-engine mode |
+| Constitutional enforcement | Execute directly |
+
+**Pre-Execution Check (MANDATORY):** Before executing any task, @aiox-master MUST check the Delegation Matrix above. If an exclusive agent owns the operation, @aiox-master MUST delegate — not execute directly. The only exceptions are:
+1. User explicitly requests `--force-execute`
+2. Running in workflow-engine mode (automated pipeline)
+3. Framework debugging with `AIOX_DEBUG=true`
+
+**Rejection Script:** When @aiox-master cannot execute a task due to agent authority:
+```
+⚠️ This task belongs to @{agent} ({persona}).
+Delegating: → @{agent} | task: {task-file}
+```
 
 ## Cross-Agent Delegation Patterns
 
