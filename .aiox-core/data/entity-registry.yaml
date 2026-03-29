@@ -1,6 +1,6 @@
 metadata:
   version: 1.0.0
-  lastUpdated: '2026-03-28T09:09:44.116Z'
+  lastUpdated: '2026-03-29T21:10:54.219Z'
   entityCount: 746
   checksumAlgorithm: sha256
   resolutionRate: 100
@@ -10732,7 +10732,7 @@ entities:
       path: .aiox-core/core/doctor/checks/core-config.js
       layer: L1
       type: module
-      purpose: Entity at .aiox-core\core\doctor\checks\core-config.js
+      purpose: Entity at .aiox-core\core-config.yaml
       keywords:
         - core
         - config
@@ -10745,8 +10745,8 @@ entities:
         score: 0.4
         constraints: []
         extensionPoints: []
-      checksum: sha256:53ddc48091f64805c100d08fb8cac5d1b4d74e844c8cfcde122f881a428b650b
-      lastVerified: '2026-03-28T09:09:43.999Z'
+      checksum: sha256:43ff551e6238bdfd254ab37d6fbd054cafc66ac14c85b3f2ac8d16ec5c97a934
+      lastVerified: '2026-03-29T21:10:54.215Z'
     entity-registry:
       path: .aiox-core/core/doctor/checks/entity-registry.js
       layer: L1

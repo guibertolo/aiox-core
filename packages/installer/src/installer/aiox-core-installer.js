@@ -147,6 +147,16 @@ async function generateVersionJson(options) {
 }
 
 /**
+ * Check if two paths resolve to the same location
+ * @param {string} pathA - First path
+ * @param {string} pathB - Second path
+ * @returns {boolean} True if paths are the same
+ */
+function isSamePath(pathA, pathB) {
+  return path.resolve(pathA) === path.resolve(pathB);
+}
+
+/**
  * Copy a single file with optional {root} replacement
  * @param {string} sourcePath - Source file path
  * @param {string} destPath - Destination file path
@@ -155,6 +165,11 @@ async function generateVersionJson(options) {
  */
 async function copyFileWithRootReplacement(sourcePath, destPath, replaceRoot = true) {
   try {
+    // Skip when source and destination are the same (framework-dev mode)
+    if (isSamePath(sourcePath, destPath)) {
+      return true;
+    }
+
     await fs.ensureDir(path.dirname(destPath));
 
     // Check if file needs {root} replacement (.md, .yaml, .yml)
@@ -255,6 +270,17 @@ async function installAioxCore(options = {}) {
     // Check if source exists
     if (!await fs.pathExists(sourceDir)) {
       throw new Error('.aiox-core source directory not found in package');
+    }
+
+    // Framework-dev mode: source and target are the same directory
+    const isFrameworkDevMode = isSamePath(sourceDir, targetAioxCore);
+    if (isFrameworkDevMode) {
+      spinner.succeed('AIOX core already in place (framework-dev mode)');
+      result.success = true;
+      result.installedFolders = FOLDERS_TO_COPY.filter(
+        f => fs.pathExistsSync(path.join(sourceDir, f))
+      );
+      return result;
     }
 
     // Create target .aiox-core directory
