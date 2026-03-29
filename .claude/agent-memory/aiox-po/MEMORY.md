@@ -39,3 +39,12 @@
 ## Validation Anti-Patterns
 - Epic INDEX claiming file exists when it doesn't (index.js) -- always verify with Glob
 - Story pseudo-code may not match exact API signatures -- always grep for actual method names in source
+
+## Projeto Externo: Site Dra. Gislaine Rodrigues
+- [project_gislaine_site.md](project_gislaine_site.md) — Contexto, status das stories e inconsistencias do projeto do site da advogada
+
+## Projeto: Plataforma de Cegonheiros
+- [project_cegonheiros_mvp_validation.md](project_cegonheiros_mvp_validation.md) — MVP 15 stories validated GO (2026-03-28), 3 transversal issues fixed
+
+## Projeto: Windows Optimizer
+- [project_windows_optimizer.md](project_windows_optimizer.md) — MVP 28 stories validated APPROVED w/ obs (2026-03-29), 123 SP, stories 10.3/10.4 oversized

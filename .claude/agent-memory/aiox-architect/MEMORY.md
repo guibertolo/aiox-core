@@ -39,3 +39,11 @@
 ## Pre-existing Test Failures (not EPIC-ACT related)
 - squads/mmos-squad/ (6 suites): missing clickup module
 - tests/core/orchestration/ (2 suites): greenfield-handler, terminal-spawner
+
+## PurgeKit — Project Assessment (2026-03-29)
+- [PurgeKit Project State](project_purgekit.md) — Tauri 2 + Rust Windows optimizer, 70 FRs, 28 stories, scaffold pending Rust install
+
+## site-gislaine — Revisão Técnica (2026-03-28)
+- [site-gislaine — Estado Arquitetural e Gaps Produção](project_site_gislaine.md) — Next.js 16 + React 19, top 10 gaps mapeados para lançamento
+- [site-gislaine — Diretrizes de Acessibilidade](project_site_gislaine_accessibility.md) — WCAG AAA, publico 50+, light mode default, stone-700 para corpo, 18px base, touch 48px
+- [site-gislaine — Auditoria SEO Completa](project_site_gislaine_seo.md) — Score 70/100, OAB fictícia blocker, LocalBusiness ausente, OG image quebrada, top 10 fixes

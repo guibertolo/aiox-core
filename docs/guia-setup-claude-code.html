@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guia de Setup - Claude Code no VS Code</title>
+
+  <!-- Open Graph / Preview do link em WhatsApp, Discord, Telegram -->
+  <meta property="og:title" content="Guia de Setup - Claude Code no VS Code">
+  <meta property="og:description" content="Passo a passo completo para instalar e configurar o Claude Code no VS Code. Guia para iniciantes no Windows.">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Visual_Studio_Code_1.35_icon.svg/512px-Visual_Studio_Code_1.35_icon.svg.png">
+  <meta property="og:image:width" content="512">
+  <meta property="og:image:height" content="512">
+  <meta property="og:locale" content="pt_BR">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Guia de Setup - Claude Code no VS Code">
+  <meta name="twitter:description" content="Passo a passo completo para instalar e configurar o Claude Code no VS Code. Guia para iniciantes.">
+  <meta name="twitter:image" content="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Visual_Studio_Code_1.35_icon.svg/512px-Visual_Studio_Code_1.35_icon.svg.png">
+
+  <!-- Descrição geral -->
+  <meta name="description" content="Guia completo de 7 passos para configurar o Claude Code no VS Code no Windows. Node.js, CLI, extensao, idioma e permissoes.">
+  <meta name="theme-color" content="#7c3aed">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: #0a0a0f;
+      color: #e0e0e8;
+      line-height: 1.7;
+      padding: 0;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      padding: 60px 40px;
+      text-align: center;
+      border-bottom: 2px solid #7c3aed44;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 30% 50%, #7c3aed11 0%, transparent 50%),
+                  radial-gradient(circle at 70% 50%, #3b82f611 0%, transparent 50%);
+      animation: pulse 8s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
+    }
+
+    .hero > * { position: relative; z-index: 1; }
+
+    .hero h1 {
+      font-size: 2.4rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #a78bfa, #60a5fa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 12px;
+    }
+
+    .hero p {
+      font-size: 1.15rem;
+      color: #94a3b8;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    .prereq {
+      background: linear-gradient(135deg, #1e1b4b88, #1e293b88);
+      border: 1px solid #7c3aed33;
+      border-radius: 16px;
+      padding: 28px 32px;
+      margin-bottom: 40px;
+    }
+
+    .prereq h2 {
+      font-size: 1.3rem;
+      color: #a78bfa;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .prereq ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .prereq li {
+      padding: 8px 0;
+      padding-left: 28px;
+      position: relative;
+      color: #cbd5e1;
+    }
+
+    .prereq li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 14px;
+      width: 16px;
+      height: 16px;
+      border-radius: 4px;
+      border: 2px solid #7c3aed;
+      background: transparent;
+    }
+
+    .step {
+      background: #111118;
+      border: 1px solid #1e293b;
+      border-radius: 16px;
+      margin-bottom: 24px;
+      overflow: hidden;
+      transition: border-color 0.3s;
+    }
+
+    .step:hover {
+      border-color: #7c3aed44;
+    }
+
+    .step-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 20px 24px;
+      background: linear-gradient(135deg, #1a1a2e, #111118);
+      border-bottom: 1px solid #1e293b;
+    }
+
+    .step-number {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #7c3aed, #3b82f6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: white;
+      flex-shrink: 0;
+    }
+
+    .step-title {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: #e2e8f0;
+    }
+
+    .step-time {
+      margin-left: auto;
+      font-size: 0.8rem;
+      color: #64748b;
+      background: #1e293b;
+      padding: 4px 10px;
+      border-radius: 20px;
+      white-space: nowrap;
+    }
+
+    .step-body {
+      padding: 24px;
+    }
+
+    .step-body p {
+      color: #94a3b8;
+      margin-bottom: 16px;
+    }
+
+    .step-body strong {
+      color: #e2e8f0;
+    }
+
+    .cmd {
+      background: #0d1117;
+      border: 1px solid #21262d;
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin: 12px 0;
+      font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+      font-size: 0.9rem;
+      color: #7ee787;
+      position: relative;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+
+    .cmd .comment {
+      color: #8b949e;
+    }
+
+    .cmd .flag {
+      color: #79c0ff;
+    }
+
+    .cmd-label {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #8b949e;
+      margin-bottom: 6px;
+    }
+
+    .cmd-copy {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: #21262d;
+      border: 1px solid #30363d;
+      color: #8b949e;
+      padding: 4px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.75rem;
+      transition: all 0.2s;
+    }
+
+    .cmd-copy:hover {
+      background: #30363d;
+      color: #e2e8f0;
+    }
+
+    .substep {
+      display: flex;
+      gap: 12px;
+      margin: 16px 0;
+      padding: 14px 16px;
+      background: #0f0f1a;
+      border-radius: 10px;
+      border-left: 3px solid #7c3aed;
+    }
+
+    .substep-letter {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #7c3aed22;
+      color: #a78bfa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .substep-content {
+      flex: 1;
+    }
+
+    .substep-content p {
+      margin-bottom: 8px;
+    }
+
+    .warning {
+      background: #422006;
+      border: 1px solid #92400e;
+      border-radius: 10px;
+      padding: 14px 18px;
+      margin: 16px 0;
+      color: #fbbf24;
+      font-size: 0.9rem;
+    }
+
+    .warning strong {
+      color: #fbbf24;
+    }
+
+    .info {
+      background: #0c1929;
+      border: 1px solid #1e40af44;
+      border-radius: 10px;
+      padding: 14px 18px;
+      margin: 16px 0;
+      color: #60a5fa;
+      font-size: 0.9rem;
+    }
+
+    .success {
+      background: #052e16;
+      border: 1px solid #16a34a44;
+      border-radius: 10px;
+      padding: 14px 18px;
+      margin: 16px 0;
+      color: #4ade80;
+      font-size: 0.9rem;
+    }
+
+    .img-placeholder {
+      background: #1a1a2e;
+      border: 1px dashed #334155;
+      border-radius: 10px;
+      padding: 40px;
+      text-align: center;
+      color: #475569;
+      margin: 16px 0;
+      font-size: 0.85rem;
+    }
+
+    .visual-guide {
+      background: #0f0f1a;
+      border: 1px solid #1e293b;
+      border-radius: 12px;
+      padding: 20px;
+      margin: 16px 0;
+    }
+
+    .visual-guide h4 {
+      color: #a78bfa;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 12px;
+    }
+
+    .path-visual {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      font-family: monospace;
+      font-size: 0.85rem;
+    }
+
+    .path-visual .folder {
+      background: #1e293b;
+      padding: 4px 10px;
+      border-radius: 6px;
+      color: #60a5fa;
+    }
+
+    .path-visual .arrow {
+      color: #475569;
+    }
+
+    .path-visual .file {
+      background: #7c3aed22;
+      padding: 4px 10px;
+      border-radius: 6px;
+      color: #a78bfa;
+    }
+
+    .shortcut-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin: 16px 0;
+    }
+
+    .shortcut-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      background: #0f0f1a;
+      border-radius: 8px;
+      border: 1px solid #1e293b;
+    }
+
+    .shortcut-key {
+      background: #1e293b;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-family: monospace;
+      font-size: 0.8rem;
+      color: #e2e8f0;
+      border: 1px solid #334155;
+      white-space: nowrap;
+    }
+
+    .shortcut-desc {
+      font-size: 0.85rem;
+      color: #94a3b8;
+    }
+
+    .progress-bar {
+      display: flex;
+      gap: 4px;
+      margin: 40px 0 20px;
+    }
+
+    .progress-dot {
+      flex: 1;
+      height: 4px;
+      background: #1e293b;
+      border-radius: 2px;
+    }
+
+    .progress-dot.active {
+      background: linear-gradient(135deg, #7c3aed, #3b82f6);
+    }
+
+    .final-section {
+      background: linear-gradient(135deg, #1e1b4b44, #0f3460 44);
+      border: 1px solid #7c3aed33;
+      border-radius: 16px;
+      padding: 32px;
+      margin-top: 40px;
+      text-align: center;
+    }
+
+    .final-section h2 {
+      font-size: 1.5rem;
+      background: linear-gradient(135deg, #a78bfa, #60a5fa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 12px;
+    }
+
+    .final-section p {
+      color: #94a3b8;
+      margin-bottom: 20px;
+    }
+
+    .test-list {
+      text-align: left;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .test-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid #1e293b44;
+      color: #cbd5e1;
+    }
+
+    .test-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #16a34a22;
+      border: 1px solid #16a34a44;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .test-icon svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    .toc {
+      background: #111118;
+      border: 1px solid #1e293b;
+      border-radius: 16px;
+      padding: 24px 28px;
+      margin-bottom: 32px;
+    }
+
+    .toc h3 {
+      color: #a78bfa;
+      font-size: 1rem;
+      margin-bottom: 14px;
+    }
+
+    .toc ol {
+      list-style: none;
+      counter-reset: toc;
+      padding: 0;
+    }
+
+    .toc li {
+      counter-increment: toc;
+      padding: 6px 0;
+    }
+
+    .toc li a {
+      color: #60a5fa;
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+
+    .toc li a:hover {
+      color: #a78bfa;
+    }
+
+    .toc li a::before {
+      content: counter(toc) ". ";
+      color: #475569;
+      font-weight: 600;
+    }
+
+    @media (max-width: 640px) {
+      .hero { padding: 40px 20px; }
+      .hero h1 { font-size: 1.8rem; }
+      .container { padding: 24px 16px 60px; }
+      .shortcut-grid { grid-template-columns: 1fr; }
+      .step-header { flex-wrap: wrap; }
+      .step-time { margin-left: 60px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="hero">
+    <h1>Setup Claude Code no VS Code</h1>
+    <p>Guia completo para configurar o Claude Code do zero no Windows. Passo a passo para iniciantes.</p>
+  </div>
+
+  <div class="container">
+
+    <div class="prereq">
+      <h2>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+        O que voce precisa ter antes de comecar
+      </h2>
+      <ul>
+        <li><strong>VS Code</strong> instalado (voce ja tem!)</li>
+        <li><strong>Node.js 18+</strong> instalado (vamos verificar no Passo 1)</li>
+        <li><strong>Conta na Anthropic</strong> com plano Claude Pro, Max ou Team (para ter acesso ao Claude Code)</li>
+        <li><strong>Conexao com a internet</strong> (obvio, mas vale lembrar)</li>
+      </ul>
+    </div>
+
+    <div class="toc">
+      <h3>Indice</h3>
+      <ol>
+        <li><a href="#step1">Instalar o Node.js</a></li>
+        <li><a href="#step2">Instalar o Claude Code (CLI)</a></li>
+        <li><a href="#step3">Fazer login no Claude Code</a></li>
+        <li><a href="#step4">Instalar a extensao no VS Code</a></li>
+        <li><a href="#step5">Configurar o idioma para portugues</a></li>
+        <li><a href="#step6">Configurar permissoes (modo YOLO)</a></li>
+        <li><a href="#step7">Testar se tudo funciona</a></li>
+        <li><a href="#dicas">Dicas de uso no dia a dia</a></li>
+      </ol>
+    </div>
+
+    <!-- PASSO 1 -->
+    <div class="step" id="step1">
+      <div class="step-header">
+        <div class="step-number">1</div>
+        <div class="step-title">Instalar o Node.js</div>
+        <div class="step-time">~5 min</div>
+      </div>
+      <div class="step-body">
+        <p>O Claude Code precisa do Node.js para funcionar. Primeiro, vamos verificar se voce ja tem instalado.</p>
+
+        <div class="substep">
+          <div class="substep-letter">a</div>
+          <div class="substep-content">
+            <p>Abra o <strong>terminal do VS Code</strong> (atalho: <code>Ctrl + '</code> ou pelo menu <strong>Terminal > New Terminal</strong>).</p>
+          </div>
+        </div>
+
+        <div class="substep">
+          <div class="substep-letter">b</div>
+          <div class="substep-content">
+            <p>Digite este comando para verificar se o Node.js esta instalado:</p>
+            <div class="cmd">node --version</div>
+            <p>Se aparecer algo como <code>v18.x.x</code>, <code>v20.x.x</code> ou <code>v22.x.x</code>, voce ja tem! Pule para o <strong>Passo 2</strong>.</p>
+          </div>
+        </div>
+
+        <div class="substep">
+          <div class="substep-letter">c</div>
+          <div class="substep-content">
+            <p>Se deu erro ou nao reconheceu o comando, voce precisa instalar:</p>
+            <ol style="color: #94a3b8; padding-left: 20px; margin-top: 8px;">
+              <li>Acesse <strong>nodejs.org</strong></li>
+              <li>Clique no botao verde <strong>"Download Node.js (LTS)"</strong></li>
+              <li>Execute o instalador (.msi) que baixou</li>
+              <li>Clique <strong>Next, Next, Next, Install</strong> (pode deixar tudo padrao)</li>
+              <li><strong>Feche e reabra o VS Code</strong> depois de instalar</li>
+              <li>Teste novamente com <code>node --version</code></li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="warning">
+          <strong>Importante:</strong> Depois de instalar o Node.js, voce PRECISA fechar e reabrir o VS Code para ele reconhecer o comando. Se nao funcionar mesmo depois de reabrir, reinicie o computador.
+        </div>
+      </div>
+    </div>
+
+    <!-- PASSO 2 -->
+    <div class="step" id="step2">
+      <div class="step-header">
+        <div class="step-number">2</div>
+        <div class="step-title">Instalar o Claude Code (CLI)</div>
+        <div class="step-time">~2 min</div>
+      </div>
+      <div class="step-body">
+        <p>Agora vamos instalar o Claude Code globalmente no seu computador.</p>
+
+        <div class="substep">
+          <div class="substep-letter">a</div>
+          <div class="substep-content">
+            <p>No terminal do VS Code, execute:</p>
+            <div class="cmd">npm install -g @anthropic-ai/claude-code</div>
+            <p>Aguarde terminar (pode levar 1-2 minutos dependendo da internet).</p>
+          </div>
+        </div>
+
+        <div class="substep">
+          <div class="substep-letter">b</div>
+          <div class="substep-content">
+            <p>Verifique se instalou corretamente:</p>
+            <div class="cmd">claude --version</div>
+            <p>Deve aparecer algo como <code>2.x.x (Claude Code)</code>.</p>
+          </div>
+        </div>
+
+        <div class="warning">
+          <strong>Se der erro de permissao:</strong> No Windows, abra o terminal como Administrador. Clique com botao direito no VS Code > "Executar como administrador", e tente o comando novamente.
+        </div>
+      </div>
+    </div>
+
+    <!-- PASSO 3 -->
+    <div class="step" id="step3">
+      <div class="step-header">
+        <div class="step-number">3</div>
+        <div class="step-title">Fazer login no Claude Code</div>
+        <div class="step-time">~2 min</div>
+      </div>
+      <div class="step-body">
+        <p>Voce precisa autenticar sua conta Anthropic para usar o Claude Code.</p>
+
+        <div class="substep">
+          <div class="substep-letter">a</div>
+          <div class="substep-content">
+            <p>No terminal, digite:</p>
+            <div class="cmd">claude</div>
+            <p>Isso vai abrir o Claude Code pela primeira vez.</p>
+          </div>
+        </div>
+
+        <div class="substep">
+          <div class="substep-letter">b</div>
+          <div class="substep-content">
+            <p>Ele vai perguntar como voce quer autenticar. Escolha:</p>
+            <div class="cmd"><span class="comment"># Use as setas do teclado para selecionar e Enter para confirmar</span>
+> Anthropic (claude.ai account)</div>
+          </div>
+        </div>
+
+        <div class="substep">
+          <div class="substep-letter">c</div>
+          <div class="substep-content">
+            <p>Vai abrir uma pagina no navegador para voce fazer login na sua conta Anthropic. Faca o login normalmente e autorize o acesso.</p>
+          </div>
+        </div>
+
+        <div class="substep">
+          <div class="substep-letter">d</div>
+          <div class="substep-content">
+            <p>Depois de autorizar, volte ao terminal. Deve aparecer uma mensagem de sucesso e o prompt do Claude Code.</p>
+            <p>Digite <code>/exit</code> para sair por enquanto (vamos configurar mais coisas antes de usar).</p>
+          </div>
+        </div>
+
+        <div class="info">
+          <strong>Sobre o plano:</strong> O Claude Code precisa de um plano pago da Anthropic (Pro $20/mes, Max $100/mes ou $200/mes). O plano gratuito NAO inclui acesso ao Claude Code.
+        </div>
+      </div>
+    </div>
+
+    <!-- PASSO 4 -->
+    <div class="step" id="step4">
+      <div class="step-header">
+        <div class="step-number">4</div>
+        <div class="step-title">Instalar a extensao no VS Code</div>
+        <div class="step-time">~1 min</div>
+      </div>
+      <div class="step-body">
+        <p>A extensao do Claude Code integra ele direto na interface do VS Code, com um painel lateral dedicado.</p>
+
+        <div class="substep">
+          <div class="substep-letter">a</div>
+          <div class="substep-content">
+            <p>Abra o VS Code e pressione <code>Ctrl + Shift + X</code> para abrir o painel de extensoes.</p>
+          </div>
+        </div>
+
+        <div class="substep">
+          <div class="substep-letter">b</div>
+          <div class="substep-content">
+            <p>Na barra de busca, digite:</p>
+            <div class="cmd">Claude Code</div>
+          </div>
+        </div>
+
+        <div class="substep">
+          <div class="substep-letter">c</div>
+          <div class="substep-content">
+            <p>Procure a extensao oficial da <strong>Anthropic</strong> (nome: "Claude Code", autor: "Anthropic"). Clique em <strong>Install</strong>.</p>
+          </div>
+        </div>
+
+        <div class="substep">
+          <div class="substep-letter">d</div>
+          <div class="substep-content">
+            <p>Depois de instalar, voce vai ver o icone do Claude na barra lateral esquerda do VS Code. Clique nele para abrir o painel.</p>
+          </div>
+        </div>
+
+        <div class="visual-guide">
+          <h4>Onde fica no VS Code</h4>
+          <p style="color: #94a3b8; font-size: 0.9rem;">Depois de instalar, o Claude aparece na <strong>barra lateral esquerda</strong> (onde ficam os icones de Explorer, Search, Git, etc). Clique no icone do Claude para abrir o chat integrado. Voce tambem pode usar o atalho <code>Ctrl + Shift + P</code> e digitar "Claude" para ver todos os comandos disponiveis.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PASSO 5 -->
+    <div class="step" id="step5">
+      <div class="step-header">
+        <div class="step-number">5</div>
+        <div class="step-title">Configurar o idioma para portugues</div>
+        <div class="step-time">~1 min</div>
+      </div>
+      <div class="step-body">
+        <p>Por padrao o Claude responde em ingles. Vamos configurar para ele responder sempre em portugues.</p>
+
+        <div class="substep">
+          <div class="substep-letter">a</div>
+          <div class="substep-content">
+            <p>No terminal do VS Code, execute:</p>
+            <div class="cmd">claude config set language portuguese</div>
+          </div>
+        </div>
+
+        <div class="substep">
+          <div class="substep-letter">b</div>
+          <div class="substep-content">
+            <p>Para confirmar que funcionou:</p>
+            <div class="cmd">claude config get language</div>
+            <p>Deve retornar <code>portuguese</code>.</p>
+          </div>
+        </div>
+
+        <div class="success">
+          <strong>Pronto!</strong> Agora o Claude vai responder em portugues em todas as conversas.
+        </div>
+      </div>
+    </div>
+
+    <!-- PASSO 6 -->
+    <div class="step" id="step6">
+      <div class="step-header">
+        <div class="step-number">6</div>
+        <div class="step-title">Configurar permissoes (modo autonomo)</div>
+        <div class="step-time">~1 min</div>
+      </div>
+      <div class="step-body">
+        <p>Por padrao, o Claude pede autorizacao para cada acao (ler arquivo, rodar comando, etc). Isso e seguro mas pode ser chato. Voce pode deixar ele mais livre.</p>
+
+        <div class="info">
+          <strong>Voce tem 2 opcoes. Escolha UMA:</strong><br><br>
+          <strong>Opcao A (Recomendado para iniciantes):</strong> Modo "Aceitar tudo" — o Claude pede permissao mas voce pode clicar "Allow" rapidamente.<br><br>
+          <strong>Opcao B (Modo avancado):</strong> Modo "YOLO" — o Claude faz tudo sem perguntar. Mais rapido, mas voce precisa confiar no que ele faz.
+        </div>
+
+        <div class="substep">
+          <div class="substep-letter">A</div>
+          <div class="substep-content">
+            <p><strong>Opcao A - Modo padrao (nao precisa fazer nada)</strong></p>
+            <p>Se voce prefere ter controle, nao precisa mudar nada. O Claude vai pedir permissao e voce clica em "Allow" ou "Deny" para cada acao.</p>
+          </div>
+        </div>
+
+        <div class="substep">
+          <div class="substep-letter">B</div>
+          <div class="substep-content">
+            <p><strong>Opcao B - Modo YOLO (sem pedir permissao)</strong></p>
+            <p>No terminal do VS Code, execute:</p>
+            <div class="cmd">claude config set default_mode bypassPermissions</div>
+            <div class="warning">
+              <strong>Atencao:</strong> No modo YOLO, o Claude pode executar comandos, criar/editar/deletar arquivos sem te perguntar. E muito mais produtivo, mas voce precisa prestar atencao no que ele esta fazendo. Se estiver comecando, use a Opcao A primeiro ate se sentir confortavel.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PASSO 7 -->
+    <div class="step" id="step7">
+      <div class="step-header">
+        <div class="step-number">7</div>
+        <div class="step-title">Testar se tudo funciona</div>
+        <div class="step-time">~2 min</div>
+      </div>
+      <div class="step-body">
+        <p>Vamos fazer um teste rapido para garantir que tudo esta funcionando.</p>
+
+        <div class="substep">
+          <div class="substep-letter">a</div>
+          <div class="substep-content">
+            <p>Abra uma pasta de projeto no VS Code (ou crie uma pasta vazia para teste):</p>
+            <div class="cmd"><span class="comment"># Criar pasta de teste</span>
+mkdir C:\teste-claude
+<span class="comment"># Abrir no VS Code</span>
+code C:\teste-claude</div>
+          </div>
+        </div>
+
+        <div class="substep">
+          <div class="substep-letter">b</div>
+          <div class="substep-content">
+            <p>Clique no icone do <strong>Claude</strong> na barra lateral do VS Code para abrir o painel de chat.</p>
+          </div>
+        </div>
+
+        <div class="substep">
+          <div class="substep-letter">c</div>
+          <div class="substep-content">
+            <p>Digite uma mensagem de teste:</p>
+            <div class="cmd">Crie um arquivo index.html com uma pagina simples que diz "Ola Mundo"</div>
+          </div>
+        </div>
+
+        <div class="substep">
+          <div class="substep-letter">d</div>
+          <div class="substep-content">
+            <p>O Claude deve criar o arquivo automaticamente. Verifique se o arquivo apareceu no Explorer do VS Code.</p>
+          </div>
+        </div>
+
+        <div class="success">
+          <strong>Se funcionou, parabens!</strong> Seu Claude Code esta configurado e pronto para uso.
+        </div>
+      </div>
+    </div>
+
+    <!-- DICAS -->
+    <div class="step" id="dicas">
+      <div class="step-header">
+        <div class="step-number" style="background: linear-gradient(135deg, #f59e0b, #ef4444);">+</div>
+        <div class="step-title">Dicas de uso no dia a dia</div>
+      </div>
+      <div class="step-body">
+
+        <h3 style="color: #a78bfa; font-size: 1rem; margin-bottom: 16px;">Atalhos uteis</h3>
+        <div class="shortcut-grid">
+          <div class="shortcut-item">
+            <span class="shortcut-key">Ctrl + Shift + P</span>
+            <span class="shortcut-desc">Abrir comandos do Claude</span>
+          </div>
+          <div class="shortcut-item">
+            <span class="shortcut-key">Ctrl + L</span>
+            <span class="shortcut-desc">Abrir chat do Claude (atalho rapido)</span>
+          </div>
+          <div class="shortcut-item">
+            <span class="shortcut-key">Escape</span>
+            <span class="shortcut-desc">Parar o Claude no meio de uma resposta</span>
+          </div>
+          <div class="shortcut-item">
+            <span class="shortcut-key">/help</span>
+            <span class="shortcut-desc">Ver comandos disponiveis no chat</span>
+          </div>
+        </div>
+
+        <h3 style="color: #a78bfa; font-size: 1rem; margin: 24px 0 16px;">O que voce pode pedir para o Claude</h3>
+        <ul style="list-style: none; padding: 0;">
+          <li style="padding: 8px 0; color: #cbd5e1; border-bottom: 1px solid #1e293b44;">
+            <strong style="color: #7ee787;">"Crie um site..."</strong> — ele cria os arquivos HTML, CSS e JS
+          </li>
+          <li style="padding: 8px 0; color: #cbd5e1; border-bottom: 1px solid #1e293b44;">
+            <strong style="color: #7ee787;">"Corrija o bug em..."</strong> — ele le o codigo e conserta
+          </li>
+          <li style="padding: 8px 0; color: #cbd5e1; border-bottom: 1px solid #1e293b44;">
+            <strong style="color: #7ee787;">"Explique esse codigo"</strong> — selecione o codigo e pergunte
+          </li>
+          <li style="padding: 8px 0; color: #cbd5e1; border-bottom: 1px solid #1e293b44;">
+            <strong style="color: #7ee787;">"Rode npm install e configure o projeto"</strong> — ele executa comandos no terminal
+          </li>
+          <li style="padding: 8px 0; color: #cbd5e1; border-bottom: 1px solid #1e293b44;">
+            <strong style="color: #7ee787;">"Refatore para ficar mais limpo"</strong> — ele melhora o codigo existente
+          </li>
+          <li style="padding: 8px 0; color: #cbd5e1;">
+            <strong style="color: #7ee787;">"Pesquise como fazer X"</strong> — ele pode buscar na web por voce
+          </li>
+        </ul>
+
+        <h3 style="color: #a78bfa; font-size: 1rem; margin: 24px 0 16px;">Comandos uteis (digite no chat)</h3>
+        <div class="cmd"><span class="comment"># Comandos que voce digita direto no chat do Claude:</span>
+
+/help          <span class="comment"># Ver todos os comandos</span>
+/compact       <span class="comment"># Limpar memoria da conversa (quando ficar lento)</span>
+/clear         <span class="comment"># Comecar conversa do zero</span>
+/cost          <span class="comment"># Ver quanto ja gastou na sessao</span>
+Escape         <span class="comment"># Parar o Claude no meio de uma acao</span></div>
+
+        <h3 style="color: #a78bfa; font-size: 1rem; margin: 24px 0 16px;">Boas praticas</h3>
+        <ul style="list-style: none; padding: 0; color: #94a3b8;">
+          <li style="padding: 6px 0;">1. <strong style="color: #e2e8f0;">Seja especifico</strong> — "Crie um botao azul com bordas arredondadas" e melhor que "crie um botao"</li>
+          <li style="padding: 6px 0;">2. <strong style="color: #e2e8f0;">Abra a pasta do projeto</strong> — O Claude trabalha melhor quando voce abre a pasta do projeto no VS Code (File > Open Folder)</li>
+          <li style="padding: 6px 0;">3. <strong style="color: #e2e8f0;">Use /compact quando ficar lento</strong> — Conversas longas podem ficar pesadas, /compact resolve</li>
+          <li style="padding: 6px 0;">4. <strong style="color: #e2e8f0;">Salve antes de pedir mudancas grandes</strong> — Faca commit no Git antes de mudancas grandes, para poder voltar atras se precisar</li>
+          <li style="padding: 6px 0;">5. <strong style="color: #e2e8f0;">Voce pode arrastar arquivos</strong> — Arraste imagens ou arquivos para o chat para o Claude analisar</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- FINAL -->
+    <div class="final-section">
+      <h2>Tudo pronto!</h2>
+      <p>Seu Claude Code esta configurado. Aqui esta o checklist final:</p>
+      <div class="test-list">
+        <div class="test-item">
+          <div class="test-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg>
+          </div>
+          <span>Node.js instalado e funcionando</span>
+        </div>
+        <div class="test-item">
+          <div class="test-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg>
+          </div>
+          <span>Claude Code CLI instalado (<code style="color: #a78bfa;">claude --version</code>)</span>
+        </div>
+        <div class="test-item">
+          <div class="test-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg>
+          </div>
+          <span>Login feito na conta Anthropic</span>
+        </div>
+        <div class="test-item">
+          <div class="test-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg>
+          </div>
+          <span>Extensao Claude Code instalada no VS Code</span>
+        </div>
+        <div class="test-item">
+          <div class="test-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg>
+          </div>
+          <span>Idioma configurado para portugues</span>
+        </div>
+        <div class="test-item">
+          <div class="test-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg>
+          </div>
+          <span>Teste "Ola Mundo" funcionou</span>
+        </div>
+      </div>
+      <p style="margin-top: 24px; font-size: 0.85rem; color: #64748b;">
+        Guia criado por Italo Gustavo | Setup baseado na configuracao real do ambiente AIOX
+      </p>
+    </div>
+
+  </div>
+
+</body>
+</html>
