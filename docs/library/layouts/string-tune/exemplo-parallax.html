@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Exemplo — Parallax — Hero de Produto</title>
+  <script src="https://unpkg.com/@fiddle-digital/string-tune@1.1.53/dist/index.js"></script>
+  <style>
+    @property --progress { syntax: '<number>'; inherits: true; initial-value: 0; }
+    :root {
+      --vh: 1vh; --vw: 1vw;
+      --c-white: #ffffff; --c-black: #0a0a0a; --c-grey: #666;
+      --easing-function: cubic-bezier(0.86, 0, 0.31, 1);
+      --g-gap: 0.4rem; --g-margin: calc(var(--g-gap) * 2);
+      --mm: 0.64rem; --m: 0.8rem; --p: 1rem;
+      --h5: 1.563rem; --h4: 1.953rem; --h3: 2.441rem; --h2: 3.052rem; --h1: 3.815rem; --h0: 5.065rem;
+    }
+    @media (min-width: 1024px) { :root { --g-margin: calc(var(--g-gap) * 4); } }
+    html, body, * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { font-size: 16px; line-height: 1.4; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--c-black); color: var(--c-white); }
+    @media (min-width: 1024px) { html { font-size: 20px; } }
+    img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+    .-w {
+      margin-left: var(--g-margin); margin-right: var(--g-margin);
+      display: grid; grid-template-columns: repeat(14, 1fr);
+      grid-template-rows: 1fr auto auto 1fr;
+      align-items: start; column-gap: var(--g-gap);
+    }
+    @media (min-width: 1024px) { .-w { min-height: calc(var(--vh, 1vh) * 140); } }
+
+    /* Texto instrucao */
+    .-w .note {
+      grid-column: 1 / 15; grid-row: 1; justify-self: center; align-self: start;
+      text-align: center; z-index: 40; margin-top: var(--h0);
+      color: var(--c-grey); font-size: var(--mm); text-transform: uppercase; letter-spacing: 0.08em;
+    }
+
+    /* Imagem fundo — parallax lento */
+    .-w .image-bg {
+      grid-column: 1 / 15; grid-row: 1 / 5;
+      margin-top: calc(var(--vh, 1vh) * 50);
+    }
+    @media (min-width: 1024px) {
+      .-w .image-bg { grid-column: 3 / 13; margin-top: min(calc(var(--vh) * 50), calc(var(--vw) * 50)); }
+    }
+
+    /* Imagem frente — parallax rapido */
+    .-w .image-front {
+      grid-column: 3 / 13; grid-row: 1 / 5;
+      margin-top: calc(var(--vh, 1vh) * 25); z-index: 20;
+    }
+    @media (min-width: 1024px) {
+      .-w .image-front { grid-column: 6 / 10; margin-top: min(calc(var(--vh) * 15), calc(var(--vw) * 50)); }
+    }
+
+    /* Titulos com parallax oposto */
+    .title {
+      grid-column: 1 / 15; align-self: center; text-align: center;
+      position: relative; font-weight: 300; letter-spacing: 0.05em;
+    }
+    .line-1 { grid-row: 2; z-index: 20; margin-top: calc(var(--vh) * 35); font-size: var(--h0); }
+    .line-2 { grid-row: 3; z-index: 20; font-size: var(--h0); color: var(--c-grey); }
+    @media (min-width: 1024px) {
+      .line-1 { margin-top: calc(var(--vh) * 5); }
+      .line-2 { margin-top: 0.5em; }
+    }
+
+    .footer { grid-column: 1 / 15; grid-row: 5; text-align: center; padding: var(--h3) 0; color: var(--c-grey); font-size: var(--mm); }
+    .footer a { color: #8b5cf6; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <div class="-w">
+    <span class="note">Scroll para ver o parallax</span>
+
+    <!-- Imagem de fundo — sem parallax (referencia) -->
+    <figure class="image-bg" string>
+      <img string="lazy" string-lazy="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&q=80" alt="Loja fundo">
+    </figure>
+
+    <!-- Imagem frontal — parallax 0.75 (move mais rapido) -->
+    <figure class="image-front" string="parallax" string-parallax="0.75">
+      <img string="lazy" string-lazy="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&q=80" alt="Produto">
+    </figure>
+
+    <!-- Textos com parallax oposto -->
+    <h1 class="title line-1" string="parallax" string-parallax="-0.1">Colecao</h1>
+    <h1 class="title line-2" string="parallax" string-parallax="0.15">Inverno 2026</h1>
+
+    <footer class="footer">
+      Exemplo — Parallax via <a href="https://string-tune.fiddle.digital/skill-hub/" target="_blank">StringTune</a>
+      | string-parallax: -0.1 (contra), 0.75 (rapido), 0.15 (lento)
+    </footer>
+  </div>
+
+  <script>
+    const stringTune = StringTune.StringTune.getInstance();
+    stringTune.use(StringTune.StringLazy);
+    stringTune.use(StringTune.StringParallax);
+    stringTune.start(0);
+  </script>
+</body>
+</html>

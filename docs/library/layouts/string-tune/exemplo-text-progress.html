@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Exemplo — Text with Progress — Manifesto de Marca</title>
+  <script src="https://unpkg.com/@fiddle-digital/string-tune@1.1.53/dist/index.js"></script>
+  <style>
+    @property --progress { syntax: '<number>'; inherits: true; initial-value: 0; }
+    @property --spotlight-angle { syntax: '<number>'; inherits: true; initial-value: 0; }
+    @property --spotlight-distance { syntax: '<number>'; inherits: true; initial-value: 0; }
+
+    :root {
+      --vh: 1vh; --vw: 1vw;
+      --c-white: #f0f0f0; --c-black: #0a0a0a;
+      --c-black-rgb: 10, 10, 10;
+      --c-grey-dark: #333333; --c-grey-dark-rgba: 51, 51, 51;
+      --c-grey: #999999;
+      --easing-function: cubic-bezier(0.86, 0, 0.31, 1);
+      --easing-function-2: cubic-bezier(0.35, 0.35, 0, 1);
+      --easing-timing: 1.5s;
+      --g-gap: 0.4rem; --g-margin: calc(var(--g-gap) * 2);
+      --mm: 0.64rem; --m: 0.8rem; --p: 1rem;
+      --h6: 1.25rem; --h5: 1.563rem; --h4: 1.953rem;
+      --h3: 2.441rem; --h2: 3.052rem; --h1: 3.815rem; --h0: 5.065rem;
+    }
+    @media (min-width: 1024px) { :root { --g-margin: calc(var(--g-gap) * 4); } }
+    html, body, * { margin: 0; padding: 0; box-sizing: border-box; }
+    html {
+      font-size: 16px; line-height: 1.6;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--c-black); color: var(--c-white);
+    }
+    @media (min-width: 1024px) { html { font-size: 20px; } }
+    body { position: relative; min-height: 100lvh; }
+
+    /* Texto splitado precisa dessas classes */
+    .-splitted { display: flex; flex-wrap: wrap; }
+    .-splitted .-s-line { display: flex; will-change: contents; }
+    .-splitted .-s-word { display: inline-flex; will-change: contents; }
+    .-splitted .-s-char { display: inline-flex; will-change: contents; }
+
+    .-w {
+      margin-left: var(--g-margin); margin-right: var(--g-margin);
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      column-gap: var(--g-gap);
+      position: relative;
+      /* Altura grande para longo percurso de scroll */
+      min-height: calc(var(--vh, 1vh) * 800);
+    }
+    @media (min-width: 1024px) {
+      .-w { grid-template-columns: repeat(14, 1fr); }
+    }
+
+    /* Contador de scroll */
+    .indent {
+      display: inline-flex;
+      width: calc((2 / 6) * (var(--vw, 1vw) * 100 - var(--g-margin) * 2));
+    }
+    .indent::before {
+      letter-spacing: initial;
+      content: 'Scroll: ' attr(data-val-pct) '%';
+      font-size: var(--m);
+      color: #8b5cf6;
+      font-feature-settings: 'ss03', 'ss14';
+    }
+    @media (min-width: 1024px) {
+      .indent { width: calc((2 / 14) * (var(--vw, 1vw) * 100 - var(--g-margin) * 2)); }
+    }
+
+    .text {
+      grid-column-start: 1; grid-column-end: 7;
+      align-self: start;
+      position: sticky; top: 0;
+      min-height: calc(var(--vh, 1vh) * 100);
+      display: flex; align-items: center;
+    }
+    @media (min-width: 1024px) {
+      .text { grid-column-start: 3; grid-column-end: 13; }
+    }
+
+    /* Palavras destacadas ficam mais claras */
+    .-highlight { color: #a399a8; }
+
+    /* Animacao por palavra — revelacao individual */
+    .-s-word {
+      --word-turn: calc((var(--word-index) - 3) / var(--word-global-total));
+      --word-step: calc(1 / var(--word-global-total));
+      --word-progress: clamp(0, calc((var(--progress) - var(--word-turn)) / var(--word-step)), 1);
+      transform: translate3d(0, calc(100% - var(--word-progress) * 100%), 0);
+      clip-path: inset(-15% 0 calc(115% - var(--word-progress) * 130%) 0);
+    }
+
+    .footer-note {
+      position: fixed; bottom: 0; left: 0; right: 0;
+      text-align: center; padding: var(--p);
+      color: var(--c-grey); font-size: var(--mm);
+      background: linear-gradient(transparent, var(--c-black) 60%);
+      pointer-events: none;
+    }
+    .footer-note a { color: #8b5cf6; text-decoration: none; pointer-events: auto; }
+  </style>
+</head>
+<body>
+  <!-- string="progress" no container injeta --progress (0→1) conforme scroll -->
+  <div class="-w" string="progress" string-enter-vp="top" string-exit-vp="bottom">
+    <div class="text">
+      <!-- string="split" string-split="word" divide o texto em palavras individuais -->
+      <span class="-h4" string="split" string-split="word"><span class="indent" data-val-pct="0"></span><split-class class="-highlight">Nos acreditamos</split-class> que o design nao e apenas estetica, e a ponte entre uma ideia e a experiencia que ela cria. Cada pixel, cada transicao, cada interacao importa. Porque quando o digital e bem feito, ele nao parece digital — ele parece humano.</span>
+    </div>
+  </div>
+
+  <footer class="footer-note">
+    Exemplo — Text with Progress via <a href="https://string-tune.fiddle.digital/skill-hub/" target="_blank">StringTune</a>
+  </footer>
+
+  <script>
+    const stringTune = StringTune.StringTune.getInstance();
+    window.StringTuneContext = stringTune;
+    stringTune.use(StringTune.StringSplit);
+    stringTune.use(StringTune.StringProgress);
+    stringTune.start(0);
+  </script>
+</body>
+</html>

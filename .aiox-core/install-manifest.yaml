@@ -8,7 +8,7 @@
 # - File types for categorization
 #
 version: 5.0.3
-generated_at: "2026-04-05T06:04:57.728Z"
+generated_at: "2026-04-05T06:29:55.424Z"
 generator: scripts/generate-install-manifest.js
 file_count: 1091
 files:
@@ -1221,7 +1221,7 @@ files:
     type: data
     size: 9575
   - path: data/entity-registry.yaml
-    hash: sha256:3d7c34e4109a157278a0ec869e2a2411af7a2546b1c5e74755ee203ef8267a8d
+    hash: sha256:97df44eb0f7ea9e469704f969856a145fcf160d727c13b298d18221b5b0633c3
     type: data
     size: 523447
   - path: data/learned-patterns.yaml
@@ -1349,9 +1349,9 @@ files:
     type: agent
     size: 24483
   - path: development/agents/dev/MEMORY.md
-    hash: sha256:badd300ad7bd4d3eb87938fb8e19a559631fc8b2491216d809d59fdcbe7714f5
+    hash: sha256:5b09bb2a623eb7056c4970ba6d8b392c2b9499be8721c43a5155715669fddc1a
     type: agent
-    size: 3156
+    size: 3260
   - path: development/agents/devops.md
     hash: sha256:a41d02fe38b086211f4c1985b8da5e4624e21767466325032aeb9b4899f8c6b0
     type: agent
@@ -1401,9 +1401,9 @@ files:
     type: agent
     size: 19988
   - path: development/agents/ux/MEMORY.md
-    hash: sha256:7337155addfd8fb89b00e1f3b1815e3a582637c85085e11512d30c5d7f214707
+    hash: sha256:94b361381986331e83f130450a8200dffb420abe39f44924bbb345a8d30dbbb7
     type: agent
-    size: 5232
+    size: 6328
   - path: development/checklists/agent-quality-gate.md
     hash: sha256:46395b5c10794ca98321e4baaaaa1737485bec3f6bc3a616cf948478c0a1c644
     type: checklist

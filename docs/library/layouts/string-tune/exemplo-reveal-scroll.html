@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Exemplo — Reveal on Scroll — Portfolio Fotografo</title>
+  <script src="https://unpkg.com/@fiddle-digital/string-tune@1.1.53/dist/index.js"></script>
+  <style>
+    @property --progress { syntax: '<number>'; inherits: true; initial-value: 0; }
+    :root {
+      --vh: 1vh; --vw: 1vw;
+      --c-white: #ffffff; --c-black: #0a0a0a; --c-grey: #666;
+      --easing-function: cubic-bezier(0.86, 0, 0.31, 1);
+      --easing-timing: 1.5s;
+      --g-gap: 0.4rem; --g-margin: calc(var(--g-gap) * 2);
+      --mm: 0.64rem; --m: 0.8rem; --p: 1rem;
+      --h6: 1.25rem; --h5: 1.563rem; --h4: 1.953rem;
+      --h3: 2.441rem; --h2: 3.052rem; --h1: 3.815rem; --h0: 5.065rem;
+    }
+    @media (min-width: 1024px) { :root { --g-margin: calc(var(--g-gap) * 4); } }
+    html, body, * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { font-size: 16px; line-height: 1.4; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--c-black); color: var(--c-white); }
+    @media (min-width: 1024px) { html { font-size: 20px; } }
+    img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+    .-w {
+      margin-left: var(--g-margin); margin-right: var(--g-margin);
+      display: grid; grid-template-columns: repeat(14, 1fr);
+      align-items: start; column-gap: var(--g-gap);
+      padding-bottom: var(--h0);
+    }
+
+    /* Header */
+    .-w .hero {
+      grid-column: 1 / 15; display: flex; justify-content: center; align-items: center;
+      text-align: center; height: calc(var(--vh, 1vh) * 60); flex-direction: column;
+    }
+    .hero h1 { font-size: var(--h1); font-weight: 300; letter-spacing: 0.1em; text-transform: uppercase; }
+    .hero p { color: var(--c-grey); font-size: var(--m); margin-top: var(--mm); }
+
+    /* Imagens com reveal */
+    .-w figure { overflow: hidden; }
+    .-w figure img {
+      scale: 1.8; opacity: 0;
+      clip-path: polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%);
+    }
+    .-w figure.-inview img {
+      scale: 1; opacity: 1;
+      clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+      transition: scale var(--easing-timing) var(--easing-function),
+        opacity var(--easing-timing) var(--easing-function),
+        clip-path var(--easing-timing) var(--easing-function);
+    }
+
+    /* Caption */
+    .caption {
+      grid-column: 1 / 15; text-align: center; padding: var(--h4) 0;
+      color: var(--c-grey); font-size: var(--m);
+    }
+
+    /* Posicoes no grid */
+    .img-1 { grid-column: 2 / 8; height: calc(var(--vh) * 70); }
+    .img-2 { grid-column: 9 / 14; height: calc(var(--vh) * 50); align-self: end; }
+    .img-3 { grid-column: 3 / 7; height: calc(var(--vh) * 55); }
+    .img-4 { grid-column: 8 / 13; height: calc(var(--vh) * 75); }
+    .img-5 { grid-column: 1 / 6; height: calc(var(--vh) * 60); }
+    .img-6 { grid-column: 7 / 12; height: calc(var(--vh) * 65); align-self: center; }
+
+    .footer { grid-column: 1 / 15; text-align: center; padding: var(--h3) 0; color: var(--c-grey); font-size: var(--mm); border-top: 1px solid rgba(255,255,255,0.06); }
+    .footer a { color: #8b5cf6; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <div class="-w">
+    <div class="hero">
+      <h1>Marina Costa</h1>
+      <p>Fotografia de retrato e lifestyle</p>
+    </div>
+
+    <figure class="img-1" string string-repeat>
+      <img string="lazy" string-lazy="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600&q=80" alt="Retrato 1">
+    </figure>
+    <figure class="img-2" string string-repeat>
+      <img string="lazy" string-lazy="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=600&q=80" alt="Retrato 2">
+    </figure>
+
+    <div class="caption">Cada imagem revela ao scroll — efeito clip-path + scale</div>
+
+    <figure class="img-3" string string-repeat>
+      <img string="lazy" string-lazy="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=600&q=80" alt="Retrato 3">
+    </figure>
+    <figure class="img-4" string string-repeat>
+      <img string="lazy" string-lazy="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&q=80" alt="Retrato 4">
+    </figure>
+
+    <div class="caption">string-repeat faz o efeito repetir ao scrollar para cima e voltar</div>
+
+    <figure class="img-5" string string-repeat>
+      <img string="lazy" string-lazy="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=600&q=80" alt="Retrato 5">
+    </figure>
+    <figure class="img-6" string string-repeat>
+      <img string="lazy" string-lazy="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80" alt="Retrato 6">
+    </figure>
+
+    <footer class="footer">
+      Exemplo — Reveal on Scroll via <a href="https://string-tune.fiddle.digital/skill-hub/" target="_blank">StringTune</a> | Biblioteca AIOX
+    </footer>
+  </div>
+
+  <script>
+    const stringTune = StringTune.StringTune.getInstance();
+    stringTune.use(StringTune.StringLazy);
+    stringTune.start(0);
+  </script>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Exemplo — Progress Reveal — Lancamento de Produto</title>
+  <script src="https://unpkg.com/@fiddle-digital/string-tune@1.1.53/dist/index.js"></script>
+  <style>
+    @property --progress { syntax: '<number>'; inherits: true; initial-value: 0; }
+    :root {
+      --vh: 1vh; --vw: 1vw;
+      --c-white: #f0f0f0; --c-black: #0a0a0a; --c-grey: #666;
+      --easing-function: cubic-bezier(0.86, 0, 0.31, 1);
+      --g-gap: 0.4rem; --g-margin: calc(var(--g-gap) * 2);
+      --mm: 0.64rem; --m: 0.8rem; --p: 1rem;
+      --h5: 1.563rem; --h4: 1.953rem; --h3: 2.441rem; --h2: 3.052rem; --h1: 3.815rem;
+    }
+    @media (min-width: 1024px) { :root { --g-margin: calc(var(--g-gap) * 4); } }
+    html, body, * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { font-size: 16px; line-height: 1.4; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--c-black); color: var(--c-white); }
+    @media (min-width: 1024px) { html { font-size: 20px; } }
+    img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+    .-w {
+      margin-left: var(--g-margin); margin-right: var(--g-margin);
+      display: grid; grid-template-columns: repeat(14, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      align-items: start; column-gap: var(--g-gap);
+      position: relative; min-height: 1024px;
+    }
+
+    .-w p {
+      grid-column: 3 / 13; grid-row: 1; justify-self: center;
+      align-self: start; text-align: center; z-index: 40;
+      margin-top: calc(var(--h1) * 2); padding: 0 10%;
+      font-size: var(--h4); font-weight: 300;
+    }
+    @media (min-width: 1024px) { .-w p { grid-column: 6 / 10; } }
+
+    /* Imagem que escala e revela com clip-path via --progress */
+    .-w .image-1 {
+      grid-column: 1 / 15; grid-row: 1; align-self: center;
+      height: calc(var(--vh, 1vh) * 40);
+      position: sticky; top: calc(var(--vh) * 30);
+      margin-bottom: calc(var(--vh) * 30);
+      /* SCALE: 50% → 100% conforme scroll */
+      scale: calc(0.5 + var(--progress) * 0.5);
+      /* CLIP-PATH: retangulo pequeno → full com bordas arredondadas */
+      clip-path: rect(
+        calc(20% - var(--progress) * 20%)
+        calc(90% + var(--progress) * 10%)
+        calc(80% + var(--progress) * 20%)
+        calc(10% - var(--progress) * 10%)
+        round calc(var(--h3) - var(--progress) * var(--h3))
+      );
+      transform: translateZ(0);
+    }
+    @media (min-width: 1024px) {
+      .-w .image-1 {
+        grid-column: 3 / 13;
+        top: calc(var(--vh) * 15); margin-bottom: calc(var(--vh) * 15);
+        height: calc(var(--vh) * 70);
+        clip-path: rect(
+          calc(20% - var(--progress) * 20%)
+          calc(70% + var(--progress) * 30%)
+          calc(80% + var(--progress) * 20%)
+          calc(30% - var(--progress) * 30%)
+          round calc(var(--h3) - var(--progress) * var(--h3))
+        );
+      }
+    }
+
+    .footer {
+      margin: var(--h1) var(--g-margin) var(--h3);
+      text-align: center; color: var(--c-grey); font-size: var(--mm);
+    }
+    .footer a { color: #8b5cf6; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <!-- string="progress" injeta --progress conforme scroll do elemento -->
+  <div class="-w" string="progress" string-enter-vp="top" string-exit-vp="bottom">
+    <p>O novo padrao de excelencia chegou.</p>
+    <figure class="image-1">
+      <img string="lazy" string-lazy="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=900&q=80" alt="Lancamento">
+    </figure>
+  </div>
+
+  <footer class="footer">
+    Exemplo — Progress Reveal via <a href="https://string-tune.fiddle.digital/skill-hub/" target="_blank">StringTune</a>
+    | scale + clip-path animados por --progress
+  </footer>
+
+  <script>
+    const stringTune = StringTune.StringTune.getInstance();
+    stringTune.use(StringTune.StringLazy);
+    stringTune.use(StringTune.StringProgress);
+    stringTune.start(0);
+  </script>
+</body>
+</html>

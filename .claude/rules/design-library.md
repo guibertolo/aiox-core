@@ -18,17 +18,32 @@ paths:
 
 Antes de implementar animacoes, efeitos de scroll, layouts masonry, parallax ou formularios estilizados, SEMPRE consultar a biblioteca local primeiro.
 
-### Efeitos disponiveis
+### Efeitos disponiveis (18 tutoriais + exemplos praticos)
 
+**Layout & Scroll:**
 - **Masonry Grid** — lojas, marketplaces, portfolios
 - **Reveal on Scroll** — landing pages, conteudo longo
 - **Parallax** — hero sections, banners
-- **Glide** — transicoes suaves
+- **Glide** — transicoes suaves entre imagens
+- **Progress** — indicadores, loading, scale/clip-path
+- **Footer Shifting** — footers com parallax/revelacao
+- **Lerp** — distorcao por velocidade de scroll
+
+**Texto & Tipografia:**
 - **Kinetic Text** — headlines, branding
-- **Progress** — indicadores, loading
-- **Footer Shifting** — footers com parallax
-- **Sequence** — onboarding, timelines
+- **Text with Progress** — revelacao palavra por palavra
+- **Split** — poster tipografico, char/word animation
+
+**Interacao & Cursor:**
+- **Cursor** — cursor customizado com media ao hover
+- **Magnetic** — cards que seguem cursor com rotacao 3D
+
+**Formularios:**
 - **Forms 1 & 2** — formularios com micro-interacoes
+
+**Outros:**
+- **Sequence** — onboarding, timelines, slideshow
+- **Position Tracker** — visualizacao artistica de posicao
 
 ### Regra de uso
 

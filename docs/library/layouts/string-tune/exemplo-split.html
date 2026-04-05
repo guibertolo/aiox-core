@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Exemplo — Split — Poster Tipografico</title>
+  <script src="https://unpkg.com/@fiddle-digital/string-tune@1.1.53/dist/index.js"></script>
+  <style>
+@property --progress { syntax: '<number>'; inherits: true; initial-value: 0; }
+@property --spotlight-angle { syntax: '<number>'; inherits: true; initial-value: 0; }
+@property --spotlight-distance { syntax: '<number>'; inherits: true; initial-value: 0; }
+
+:root {
+  --vh: 1vh; --vw: 1vw;
+  --c-white: #ffffff; --c-black: #000000; --c-black-rgb: 0, 0, 0;
+  --c-grey-dark: #333333; --c-grey: #999999; --c-red: #FF5A37;
+  --easing-function: cubic-bezier(0.86, 0, 0.31, 1);
+  --easing-function-2: cubic-bezier(0.35, 0.35, 0, 1);
+  --g-gap: 0.4rem; --g-margin: calc(var(--g-gap) * 2);
+  --mm: 0.64rem; --m: 0.8rem; --p: 1rem;
+  --h6: 1.25rem; --h5: 1.563rem; --h4: 1.953rem;
+  --h3: 2.441rem; --h2: 3.052rem; --h1: 3.815rem; --h0: 5.065rem;
+}
+@media (min-width: 1024px) { :root { --g-margin: calc(var(--g-gap) * 4); } }
+html, body, * { margin: 0; padding: 0; }
+html { font-size: 16px; line-height: 1.25; font-family: Arial, Helvetica, sans-serif; background-color: #808080; color: black; }
+@media (min-width: 1024px) { html { font-size: 20px; } }
+body { position: relative; min-height: 100lvh; }
+img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+.-splitted { display: flex; flex-wrap: wrap; }
+.-splitted .-s-line { display: flex; will-change: contents; }
+.-splitted .-s-word { display: inline-flex; will-change: contents; }
+.-splitted .-s-char { display: inline-flex; will-change: contents; }
+
+.-w {
+  margin-left: var(--g-margin); margin-right: var(--g-margin);
+  display: grid; grid-template-columns: repeat(14, 1fr);
+  grid-template-rows: repeat(17, auto);
+  column-gap: var(--g-gap);
+}
+
+.poster {
+  grid-column-start: 1; grid-column-end: 15;
+  display: grid; grid-template-columns: repeat(10, 1fr);
+  column-gap: var(--g-gap); align-items: start;
+  margin-top: calc(var(--vh) * 20); margin-bottom: calc(var(--h1) * 2);
+  color: #D7BDC9; position: relative;
+}
+.poster * { position: relative; }
+
+.image-bg {
+  grid-column-start: 1; grid-column-end: 11;
+  grid-row-start: 1; grid-row-end: 18;
+  position: absolute; inset: 0; overflow: hidden;
+  display: flex; justify-content: center; align-items: center;
+}
+.image-bg img {
+  width: 100%; height: calc(100% + var(--vh,1vh) * 20); object-fit: cover;
+}
+
+.title {
+  align-self: center; color: #E6DFE4;
+  text-transform: uppercase; font-size: calc(var(--vw,1vw) * 11); line-height: 0.8;
+}
+.shaping {
+  grid-column: 1 / 11; grid-row: 4 / 5; justify-self: start;
+  color: var(--c-red); margin-left: var(--p);
+}
+.a { grid-column: 1 / 11; grid-row: 6 / 7; justify-self: start; color: var(--c-black); margin-left: var(--p); }
+.distinct { grid-column: 1 / 11; grid-row: 6 / 7; justify-self: right; text-align: right; margin-right: var(--p); }
+.identity { grid-column: 1 / 11; grid-row: 8 / 9; justify-self: left; margin-left: var(--p); }
+.through { grid-column: 1 / 10; grid-row: 10 / 11; justify-self: right; text-align: right; margin-right: var(--p); }
+.form { grid-column: 1 / 11; grid-row: 12 / 13; justify-self: left; margin-left: var(--p); }
+
+.top-center {
+  grid-column: 1 / 11; grid-row: 1 / 2;
+  text-align: center; margin-top: calc(var(--vw,1vw) * 20);
+}
+.bottom-center {
+  grid-column: 1 / 11; grid-row: 17 / 18;
+  text-align: center; margin-bottom: calc(var(--vw,1vw) * 20);
+}
+.caption {
+  grid-column: 8 / 10; grid-row: 2 / 3;
+  max-width: 7rem; margin-top: calc(var(--vw,1vw) * 40);
+  margin-bottom: calc(var(--vw,1vw) * 20);
+}
+
+.footer-note {
+  text-align: center; padding: var(--h3) var(--g-margin);
+  color: var(--c-grey); font-size: var(--mm);
+}
+.footer-note a { color: #8b5cf6; text-decoration: none; }
+</style>
+</head>
+<body>
+  <div class="-w">
+    <div class="poster">
+      <div class="image-bg" string="parallax" string-parallax="0.1">
+        <img string="lazy" string-lazy="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800&q=80" alt="Retrato">
+      </div>
+
+      <span class="top-center -mm">Design Studio — 2026</span>
+      <span class="caption -mm">Cada letra e um universo de possibilidades</span>
+
+      <!-- string="split" string-split="char" divide em caracteres individuais -->
+      <span class="title shaping" string="split" string-split="char">Shaping</span>
+      <span class="title a" string="split" string-split="char">A</span>
+      <span class="title distinct" string="split" string-split="char">Distinct</span>
+      <span class="title identity" string="split" string-split="char">Identity</span>
+      <span class="title through" string="split" string-split="char">Through</span>
+      <span class="title form" string="split" string-split="char">Form</span>
+
+      <span class="bottom-center -mm">Tipografia e identidade visual</span>
+    </div>
+  </div>
+
+  <footer class="footer-note">
+    Exemplo — Split via <a href="https://string-tune.fiddle.digital/skill-hub/" target="_blank">StringTune</a>
+    | string="split" string-split="char|word" — divide texto em caracteres/palavras animaveis
+  </footer>
+
+  <script>
+    const stringTune = StringTune.StringTune.getInstance();
+    window.StringTuneContext = stringTune;
+    stringTune.use(StringTune.StringLazy);
+    stringTune.use(StringTune.StringSplit);
+    stringTune.use(StringTune.StringParallax);
+    stringTune.start(0);
+  </script>
+</body>
+</html>

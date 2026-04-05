@@ -43,6 +43,11 @@
 | Sequence Animation | `tutorial-16-sequence.html` | Onboarding, apresentacoes, timelines |
 | Form 1 | `tutorial-11-form-1.html` | Formularios estilizados com micro-interacoes |
 | Form 2 | `tutorial-12-form-2.html` | Variante de formulario com efeitos diferentes |
+| Lerp (Scroll Speed) | `tutorial-04-lerp.html` | Distorcao de imagem por velocidade de scroll, clip-path dinamico |
+| Cursor Interativo | `tutorial-06-cursor.html` | Menu com cursor customizado que mostra media ao hover |
+| Magnetic | `tutorial-07-magnetic.html` | Cards/imagens que seguem o cursor com rotacao 3D, portfolios |
+| Split Text | `tutorial-10-split.html` | Poster tipografico, split por char/word, animacao de letras |
+| Position Tracker | `tutorial-15-position-tracker.html` | Visualizacao artistica de posicao, SVG + tracking |
 | Xmas Tree | `tutorial-01-xmas-tree.html` | Decorativo/showcase (referencia tecnica) |
 
 **Como a lib funciona (conhecimento tecnico):**
@@ -60,6 +65,12 @@
 - Parallax: `string="parallax" string-parallax="0.75"` (0=fixo, 1=normal, negativo=contra)
 - Reveal: `string string-repeat` no `<figure>` — classe `-inview` adicionada auto
 - Input/Form: `string-input="group:nome"` para validacao inline com estados `-error`/`-valid`
+- Lerp: `string="lerp"` — injeta `--lerp` (velocidade scroll), usar em clip-path/scale CSS
+- Cursor: `string="cursor" string-cursor="media" string-cursor-media="url"` — cursor mostra imagem
+- Magnetic: `string="magnetic" string-radius="800" string-strength="0.1"` — injeta `--magnetic-x/y`
+- Split: `string="split" string-split="char|word"` — divide texto em chars/words animaveis
+- Position Tracker: `StringPositionTracker` — tracker visual de posicao com SVG
+- Glide: `string="glide" string-glide="0.0-1.0"` — deslize de imagem ao scroll
 
 **Padroes CSS reutilizaveis (extrair dos arquivos):**
 - Reveal: `clip-path: polygon(50% 50%,...) → polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)`

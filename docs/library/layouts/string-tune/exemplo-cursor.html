@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Exemplo — Cursor — Menu Interativo</title>
+  <script src="https://unpkg.com/@fiddle-digital/string-tune@1.1.53/dist/index.js"></script>
+  <style>
+@property --progress { syntax: '<number>'; inherits: true; initial-value: 0; }
+@property --spotlight-angle { syntax: '<number>'; inherits: true; initial-value: 0; }
+@property --spotlight-distance { syntax: '<number>'; inherits: true; initial-value: 0; }
+
+:root {
+  --vh: 1vh; --vw: 1vw;
+  --c-white: #ffffff; --c-black: #000000; --c-black-rgb: 0, 0, 0;
+  --c-grey-dark: #333333; --c-grey-dark-rgb: 51, 51, 51;
+  --c-grey: #999999;
+  --easing-function: cubic-bezier(0.86, 0, 0.31, 1);
+  --easing-function-2: cubic-bezier(0.35, 0.35, 0, 1);
+  --g-gap: 0.4rem; --g-margin: calc(var(--g-gap) * 2);
+  --mm: 0.64rem; --m: 0.8rem; --p: 1rem;
+  --h6: 1.25rem; --h5: 1.563rem; --h4: 1.953rem;
+  --h3: 2.441rem; --h2: 3.052rem; --h1: 3.815rem; --h0: 5.065rem;
+}
+@media (min-width: 1024px) { :root { --g-margin: calc(var(--g-gap) * 4); } }
+html, body, * { margin: 0; padding: 0; }
+html { font-size: 16px; line-height: 1.25; font-family: Arial, Helvetica, sans-serif; background-color: #808080; color: black; }
+@media (min-width: 1024px) { html { font-size: 20px; } }
+body { position: relative; min-height: 100lvh; }
+img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+.-w {
+  margin-left: var(--g-margin); margin-right: var(--g-margin);
+  display: grid; grid-template-columns: repeat(14, 1fr);
+  grid-template-rows: 1fr auto auto auto auto 1fr;
+  align-items: center;
+  min-height: calc(var(--vh, 1vh) * 100);
+}
+
+.-w .cross { display: none; }
+@media (min-width: 1024px) {
+  .-w { grid-template-rows: 2fr 1fr auto auto 1fr 2fr; }
+  .-w .cross {
+    grid-column-start: 3; grid-column-end: 13;
+    grid-row-start: 2; grid-row-end: 6;
+    justify-self: stretch; align-self: stretch; display: block;
+    background-image:
+      linear-gradient(to right, transparent 50%, rgba(var(--c-grey-dark-rgb), 0.4) calc(50% + 1px), transparent calc(50% + 1px)),
+      linear-gradient(to top, transparent 50%, rgba(var(--c-grey-dark-rgb), 0.4) calc(50% + 1px), transparent calc(50% + 1px));
+    background-repeat: no-repeat;
+  }
+}
+
+.item {
+  display: flex; justify-content: center; align-items: center;
+  gap: var(--g-gap); padding: var(--g-gap) 0; cursor: default; position: relative;
+  color: var(--c-white);
+}
+.item figure {
+  flex-shrink: 0; width: var(--h3); border-radius: var(--g-gap); overflow: hidden;
+}
+.-l, .-r {
+  grid-column-start: 1; grid-column-end: 15;
+}
+
+@media (min-width: 1024px) {
+  .-l { grid-column-start: 3; grid-column-end: 8; }
+  .-r { grid-column-start: 8; grid-column-end: 13; }
+  .water, .earth { grid-row-start: 3; grid-row-end: 4; }
+  .air, .fire { grid-row-start: 4; grid-row-end: 5; }
+
+  .item { padding: var(--p) calc(var(--g-gap) / 2); }
+  .item::before {
+    content: ''; position: absolute; inset: calc(var(--g-gap) / 2);
+    background-color: rgba(var(--c-grey-dark-rgb), 0.2);
+    border-radius: var(--g-gap); opacity: 0; scale: 0.5;
+    transition: opacity 0.3s var(--easing-function), scale 0.3s var(--easing-function);
+  }
+  .item:hover::before {
+    opacity: 1; scale: 1;
+    transition: opacity 0.6s var(--easing-function-2), scale 0.6s var(--easing-function-2);
+  }
+  .item figure {
+    opacity: 1; scale: 1;
+    transition: opacity 0.6s var(--easing-function-2), scale 0.6s var(--easing-function-2);
+  }
+  .-w:has(.item:hover) .item figure { scale: 0.5; }
+  .-w .item:hover figure {
+    scale: 0.25 !important; opacity: 0;
+    transition: opacity 0.3s var(--easing-function), scale 0.3s var(--easing-function);
+  }
+}
+
+.note {
+  grid-column: 1 / 15; grid-row: 1;
+  justify-self: center; text-align: center;
+  color: var(--c-white); font-size: var(--mm);
+  text-transform: uppercase;
+}
+
+.footer-note {
+  text-align: center; padding: var(--h3) var(--g-margin);
+  color: var(--c-grey); font-size: var(--mm);
+}
+.footer-note a { color: #8b5cf6; text-decoration: none; }
+</style>
+</head>
+<body>
+  <div class="-w">
+    <span class="note">Passe o mouse nos itens (desktop) — cursor customizado reage</span>
+    <div class="cross"></div>
+
+    <div class="item water -l" string="cursor" string-cursor="media" string-cursor-media="https://images.unsplash.com/photo-1506929562872-bb421503ef21?w=300&q=60">
+      <figure><img string="lazy" string-lazy="https://images.unsplash.com/photo-1506929562872-bb421503ef21?w=80&q=60" alt=""></figure>
+      <span class="-h5">Agua</span>
+    </div>
+    <div class="item earth -r" string="cursor" string-cursor="media" string-cursor-media="https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=300&q=60">
+      <figure><img string="lazy" string-lazy="https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=80&q=60" alt=""></figure>
+      <span class="-h5">Terra</span>
+    </div>
+    <div class="item air -l" string="cursor" string-cursor="media" string-cursor-media="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=300&q=60">
+      <figure><img string="lazy" string-lazy="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=80&q=60" alt=""></figure>
+      <span class="-h5">Ar</span>
+    </div>
+    <div class="item fire -r" string="cursor" string-cursor="media" string-cursor-media="https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=300&q=60">
+      <figure><img string="lazy" string-lazy="https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=80&q=60" alt=""></figure>
+      <span class="-h5">Fogo</span>
+    </div>
+  </div>
+
+  <footer class="footer-note">
+    Exemplo — Cursor via <a href="https://string-tune.fiddle.digital/skill-hub/" target="_blank">StringTune</a>
+    | string="cursor" string-cursor="media" — cursor mostra imagem ao hover
+  </footer>
+
+  <script>
+    const stringTune = StringTune.StringTune.getInstance();
+    window.StringTuneContext = stringTune;
+    stringTune.use(StringTune.StringLazy);
+    stringTune.use(StringTune.StringCursor);
+    stringTune.start(0);
+  </script>
+</body>
+</html>
