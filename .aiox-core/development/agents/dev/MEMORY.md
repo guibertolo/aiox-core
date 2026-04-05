@@ -22,6 +22,12 @@
 - Conventional commits: `feat:`, `fix:`, `docs:`, `test:`, `chore:`, `refactor:`
 - Reference story: `feat: implement feature [Story NOG-18]`
 
+### Design/Effects Library
+- StringTune effects available at `docs/library/layouts/string-tune/` (12 efeitos)
+- Masonry grid, parallax, reveal-on-scroll, kinetic text, forms, glide, sequence
+- CSS-First approach — consultar @ux para integracao
+- CDN: `https://unpkg.com/@fiddle-digital/string-tune@1.1.53/dist/index.js`
+
 ### Common Gotchas
 - Windows paths: use forward slashes in code, bash shell not cmd
 - `fs.existsSync` for sync checks, `fs.promises` for async
