@@ -1,0 +1,403 @@
+workflow:
+  id: idea-to-done-pipeline
+  name: "Pipeline Idea-to-Done"
+  description: "Pipeline completo de 29 steps + 7 gates: da ideia ao deploy. Cobre research, brief, spec, epic/stories, implementacao, quality paralela e close."
+  version: "1.0.0"
+  type: development
+  metadata:
+    total_steps: 29
+    total_gates: 7
+    elicit: true
+    confirmation_required: true
+    source: "workflowitalo.jpg — Pipeline Idea-to-Done diagram"
+    date_captured: "2026-04-05"
+
+  # ============================================================
+  # FASE 0: RESEARCH (paralelo)
+  # 3 steps + GATE-0
+  # ============================================================
+  phases:
+    - id: fase-0
+      name: "RESEARCH"
+      mode: parallel
+      steps:
+        - step: 1
+          id: step-01
+          name: "Market Research"
+          agent: "@analyst"
+          action: "Pesquisa de mercado: tamanho, tendencias, players, oportunidades"
+          output: "research/market-research.md"
+          parallel_group: "research"
+
+        - step: 2
+          id: step-02
+          name: "Technical Research"
+          agent: "@analyst"
+          action: "Pesquisa tecnica: tecnologias, viabilidade, benchmarks, limitacoes"
+          output: "research/technical-research.md"
+          parallel_group: "research"
+
+        - step: 3
+          id: step-03
+          name: "Competitive Research"
+          agent: "@analyst"
+          action: "Pesquisa competitiva: concorrentes diretos/indiretos, diferenciais, gaps"
+          output: "research/competitive-research.md"
+          parallel_group: "research"
+
+      gate:
+        id: gate-0
+        name: "Research Gate"
+        categories: 3
+        validation:
+          - category: "market"
+            rule: "Market research completo com dados quantitativos"
+          - category: "technical"
+            rule: "Viabilidade tecnica confirmada com evidencias"
+          - category: "competitive"
+            rule: "Pelo menos 3 competidores analisados"
+
+    # ============================================================
+    # FASE 1: PRODUCT BRIEF (sequencial)
+    # 5 steps + GATE-1
+    # ============================================================
+    - id: fase-1
+      name: "PRODUCT BRIEF"
+      mode: sequential
+      depends_on: gate-0
+      steps:
+        - step: 4
+          id: step-04
+          name: "Understand Intent"
+          agent: "@pm"
+          action: "Entender a intencao do usuario/stakeholder. O que quer resolver e por que."
+
+        - step: 5
+          id: step-05
+          name: "Contextual Discovery"
+          agent: "@pm"
+          action: "Descoberta contextual — consome research reports da Fase 0"
+          consumes:
+            - "research/market-research.md"
+            - "research/technical-research.md"
+            - "research/competitive-research.md"
+
+        - step: 6
+          id: step-06
+          name: "Guided Elicitation"
+          agent: "@pm"
+          action: "Elicitacao guiada de requisitos com stakeholder"
+
+        - step: 7
+          id: step-07
+          name: "Draft Brief"
+          agent: "@pm"
+          action: "Redigir product brief com base nos insumos coletados"
+          output: "brief/product-brief-DRAFT.md"
+
+        - step: 8
+          id: step-08
+          name: "Brief Review"
+          agent: "@pm"
+          action: "Revisar e refinar o brief com feedback"
+          output: "brief/product-brief.md"
+
+      gate:
+        id: gate-1
+        name: "Brief Gate"
+        categories: 5
+        validation:
+          - category: "intent"
+            rule: "Intencao do produto claramente definida"
+          - category: "discovery"
+            rule: "Contexto de mercado/tecnico incorporado"
+          - category: "elicitation"
+            rule: "Requisitos elicitados com stakeholder"
+          - category: "draft"
+            rule: "Brief redigido com todas as secoes"
+          - category: "review"
+            rule: "Brief revisado e aprovado"
+
+    # ============================================================
+    # FASE 2: SPEC PIPELINE (complexity-routed)
+    # Ate 8 steps + GATE-2
+    # ============================================================
+    - id: fase-2
+      name: "SPEC PIPELINE"
+      mode: complexity-routed
+      depends_on: gate-1
+      complexity_classes:
+        simple:
+          score_range: [0, 8]
+          skip_steps: [step-11, step-14, step-15]
+        standard:
+          score_range: [9, 15]
+          skip_steps: [step-14, step-15]
+        complex:
+          score_range: [16, 25]
+          skip_steps: []
+      steps:
+        - step: 9
+          id: step-09
+          name: "Gather Requirements"
+          agent: "@pm"
+          action: "Coletar e estruturar requisitos funcionais e nao-funcionais"
+          output: "spec/requirements.json"
+
+        - step: 10
+          id: step-10
+          name: "Assess Complexity"
+          agent: "@architect"
+          action: "Avaliar complexidade em 5 dimensoes → classificar SIMPLE/STANDARD/COMPLEX"
+          output: "spec/complexity.json"
+          routes_to: "simple|standard|complex"
+
+        - step: 11
+          id: step-11
+          name: "Research Dependencies"
+          agent: "@analyst"
+          action: "2o round de research focado em dependencias tecnicas"
+          skip_if: "simple"
+          output: "spec/dependencies-research.md"
+
+        - step: 12
+          id: step-12
+          name: "Write Spec"
+          agent: "@pm"
+          action: "Escrever spec.md — Art. IV: No Invention (todo statement rastreia para FR/NFR/CON/research)"
+          output: "spec/spec.md"
+          constitutional_gate: "Article IV — No Invention"
+
+        - step: 13
+          id: step-13
+          name: "Critique Spec"
+          agent: "@qa"
+          action: "Criticar spec em 5 dimensoes. Verdicts: APPROVED (>=4.0) / NEEDS_REVISION (3.0-3.9) / BLOCKED (<3.0)"
+          output: "spec/critique.json"
+
+        - step: 14
+          id: step-14
+          name: "Revise Spec"
+          agent: "@pm"
+          action: "Revisar spec com base na critica [COMPLEX only]"
+          skip_if: "simple|standard"
+          output: "spec/spec-revised.md"
+
+        - step: 15
+          id: step-15
+          name: "Final Critique"
+          agent: "@qa"
+          action: "Critica final pos-revisao [COMPLEX only]"
+          skip_if: "simple|standard"
+          output: "spec/final-critique.json"
+
+        - step: 16
+          id: step-16
+          name: "Implementation Plan"
+          agent: "@architect"
+          action: "Plano de implementacao com arquitetura, componentes, sequencia"
+          output: "spec/implementation.yaml"
+
+      gate:
+        id: gate-2
+        name: "Spec Gate"
+        categories: 8
+        skip_rules_by_complexity: true
+        validation:
+          - category: "requirements"
+            rule: "FR e NFR completos e rastreados"
+          - category: "complexity"
+            rule: "Classificacao de complexidade definida"
+          - category: "research"
+            rule: "Dependencias pesquisadas (skip se SIMPLE)"
+          - category: "spec"
+            rule: "Spec escrita sem invencoes (Art. IV)"
+          - category: "critique"
+            rule: "Spec criticada com score >= 3.0"
+          - category: "revision"
+            rule: "Spec revisada se COMPLEX"
+          - category: "final_critique"
+            rule: "Critica final aprovada se COMPLEX"
+          - category: "plan"
+            rule: "Plano de implementacao gerado"
+
+    # ============================================================
+    # FASE 3: EPIC + STORIES
+    # 3 steps + GATE-3
+    # ============================================================
+    - id: fase-3
+      name: "EPIC + STORIES"
+      mode: sequential
+      depends_on: gate-2
+      steps:
+        - step: 17
+          id: step-17
+          name: "Create Epic"
+          agent: "@pm"
+          action: "Criar epic com contexto, scope, stories planejadas"
+          output: "docs/stories/epics/EPIC-{id}.md"
+
+        - step: 18
+          id: step-18
+          name: "Create Stories"
+          agent: "@sm"
+          action: "Criar stories individuais a partir do epic"
+          output: "docs/stories/active/{epicNum}.{storyNum}.story.md"
+
+        - step: 19
+          id: step-19
+          name: "Validate Stories"
+          agent: "@po"
+          action: "Validar cada story com 10-point checklist. GO (>=7) ou NO-GO."
+          checklist: "10-point validation (see story-lifecycle.md)"
+
+      gate:
+        id: gate-3
+        name: "Stories Gate"
+        categories: 3
+        validation:
+          - category: "epic"
+            rule: "Epic criado com scope e contexto"
+          - category: "stories"
+            rule: "Todas stories criadas com AC claros"
+          - category: "validation"
+            rule: "Todas stories validadas (GO) pelo @po"
+
+    # ============================================================
+    # FASE 4: IMPLEMENTACAO (por story)
+    # 4 steps + GATE-4 (FORK POINT)
+    # ============================================================
+    - id: fase-4
+      name: "IMPLEMENTACAO"
+      mode: per-story
+      depends_on: gate-3
+      steps:
+        - step: 20
+          id: step-20
+          name: "Setup Environment"
+          agent: "@dev"
+          action: "Preparar ambiente: branch, dependencias, configuracao"
+
+        - step: 21
+          id: step-21
+          name: "Implement ACs"
+          agent: "@dev"
+          action: "Implementar acceptance criteria da story"
+
+        - step: 22
+          id: step-22
+          name: "Self-Verify"
+          agent: "@dev"
+          action: "Verificacao automatica: lint + typecheck + tests + build"
+          checks:
+            - "npm run lint"
+            - "npm run typecheck"
+            - "npm test"
+            - "npm run build"
+
+        - step: 23
+          id: step-23
+          name: "Dev Complete"
+          agent: "@dev"
+          action: "Marcar story como implementada, atualizar file list e checkboxes"
+
+      gate:
+        id: gate-4
+        name: "Implementation Gate — FORK POINT"
+        categories: 4
+        fork_point: true
+        description: "Apos este gate, quality roda em paralelo via worktrees"
+        validation:
+          - category: "environment"
+            rule: "Ambiente configurado corretamente"
+          - category: "implementation"
+            rule: "Todos ACs implementados"
+          - category: "self_verify"
+            rule: "lint + typecheck + tests + build passam"
+          - category: "completion"
+            rule: "Story atualizada com file list e checkboxes"
+
+    # ============================================================
+    # FASE 5: QUALITY PARALELA
+    # 3 steps paralelos (worktrees) + GATE-5
+    # ============================================================
+    - id: fase-5
+      name: "QUALITY PARALELA"
+      mode: parallel
+      depends_on: gate-4
+      worktree_enabled: true
+      steps:
+        - step: 24
+          id: step-24
+          name: "QA Review"
+          agent: "@qa"
+          action: "Code review, quality checks, acceptance criteria verification"
+          worktree: "qa/{story}"
+          parallel_group: "quality"
+
+        - step: 25
+          id: step-25
+          name: "Docs"
+          agent: "@tech-writer"
+          action: "Documentacao tecnica e de usuario"
+          worktree: "docs/{story}"
+          parallel_group: "quality"
+
+        - step: 26
+          id: step-26
+          name: "E2E Tests"
+          agent: "@qa"
+          action: "Testes end-to-end automatizados"
+          worktree: "e2e/{story}"
+          parallel_group: "quality"
+
+      gate:
+        id: gate-5
+        name: "Quality Gate"
+        categories: 3
+        validation:
+          - category: "qa_review"
+            rule: "QA review PASS ou CONCERNS (nao FAIL)"
+          - category: "docs"
+            rule: "Documentacao atualizada"
+          - category: "e2e"
+            rule: "Testes E2E passam"
+
+    # ============================================================
+    # FASE 6: CLOSE
+    # 3 steps + GATE-6
+    # ============================================================
+    - id: fase-6
+      name: "CLOSE"
+      mode: sequential
+      depends_on: gate-5
+      steps:
+        - step: 27
+          id: step-27
+          name: "Merge & Push"
+          agent: "@devops"
+          action: "Merge branches, push para remote"
+
+        - step: 28
+          id: step-28
+          name: "Release"
+          agent: "@devops"
+          action: "Criar release/tag se aplicavel"
+
+        - step: 29
+          id: step-29
+          name: "Close Story"
+          agent: "@devops"
+          action: "Marcar story como Done, fechar PR, atualizar epic progress"
+
+      gate:
+        id: gate-6
+        name: "Close Gate"
+        categories: 3
+        validation:
+          - category: "merge"
+            rule: "Codigo mergeado e pushed"
+          - category: "release"
+            rule: "Release criada se necessario"
+          - category: "closure"
+            rule: "Story Done, PR fechado, epic atualizado"

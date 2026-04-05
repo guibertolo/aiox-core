@@ -8,7 +8,77 @@ Uma task validada é lei: deve ser executada conforme configurada, com todas as 
 
 ---
 
-## 4 Primary Workflows
+## Pipeline Idea-to-Done (MASTER WORKFLOW)
+
+**O workflow completo de 29 steps + 7 gates que governa todo o ciclo de vida.**
+**Definicao YAML:** `.aiox-core/development/workflows/idea-to-done-pipeline.yaml`
+
+```
+FASE 0: RESEARCH (paralelo)         → 3 steps + GATE-0
+  step-01 Market Research     (@analyst)
+  step-02 Technical Research  (@analyst)    ── GATE-0 (3 categorias)
+  step-03 Competitive Research(@analyst)
+                                        │
+FASE 1: PRODUCT BRIEF (sequencial)  → 5 steps + GATE-1
+  step-04 Understand Intent   (@pm)
+  step-05 Contextual Discovery(@pm)     ← consome research reports
+  step-06 Guided Elicitation  (@pm)
+  step-07 Draft Brief         (@pm)
+  step-08 Brief Review        (@pm)
+  GATE-1 (5 categorias: intent, discovery, elicitation, draft, review)
+                                        │
+FASE 2: SPEC PIPELINE (complexity-routed) → ate 8 steps + GATE-2
+  step-09 Gather Requirements (@pm)
+  step-10 Assess Complexity   (@architect) → SIMPLE/STANDARD/COMPLEX
+  step-11 Research Dependencies(@analyst)  ← 2o round de research
+  step-12 Write Spec          (@pm)        Art. IV: No Invention
+  step-13 Critique Spec       (@qa)        5-dim gate
+  step-14 Revise Spec         (@pm)        [COMPLEX only]
+  step-15 Final Critique      (@qa)        [COMPLEX only]
+  step-16 Implementation Plan (@architect)
+  GATE-2 (8 categorias, skip rules por complexidade)
+                                        │
+FASE 3: EPIC + STORIES              → 3 steps + GATE-3
+  step-17 Create Epic         (@pm)
+  step-18 Create Stories      (@sm)
+  step-19 Validate Stories    (@po)        10-point checklist
+  GATE-3 (3 categorias: epic, stories, validation)
+                                        │
+FASE 4: IMPLEMENTACAO (por story)    → 4 steps + GATE-4
+  step-20 Setup Environment   (@dev)
+  step-21 Implement ACs       (@dev)
+  step-22 Self-Verify         (@dev)       lint+typecheck+tests+build
+  step-23 Dev Complete        (@dev)
+  GATE-4 (4 categorias) ═══ FORK POINT
+                                        │
+FASE 5: QUALITY PARALELA             → 3 steps paralelos + GATE-5
+  step-24 QA Review           (@qa)        worktree qa/{story}
+  step-25 Docs                (@tech-writer) worktree docs/{story}  ── GATE-5
+  step-26 E2E Tests           (@qa)        worktree e2e/{story}
+                                        │
+FASE 6: CLOSE                        → 3 steps + GATE-6
+  step-27 Merge & Push        (@devops)
+  step-28 Release             (@devops)
+  step-29 Close Story         (@devops)
+  GATE-6 (3 categorias: merge, release, closure)
+```
+
+### Workflow Selection: Entrada no Pipeline
+
+| Situacao | Entra na Fase | Steps executados |
+|----------|---------------|-----------------|
+| Ideia nova do zero | Fase 0 | Todos (29 steps) |
+| Requisitos ja claros | Fase 2 | Steps 9-29 (21 steps) |
+| Epic ja existe | Fase 3 | Steps 17-29 (13 steps) |
+| Stories ja validadas | Fase 4 | Steps 20-29 (10 steps) |
+| Bug fix simples (YOLO) | Fase 4 | Steps 20-23 + 27 (5 steps) |
+| QA encontrou issues | QA Loop | Iterativo dentro da Fase 5 |
+
+---
+
+## 4 Component Workflows
+
+Os workflows abaixo sao componentes do Pipeline Idea-to-Done. Podem ser executados isoladamente quando a entrada no pipeline nao e pela Fase 0.
 
 ### 1. Story Development Cycle (SDC) — PRIMARY
 

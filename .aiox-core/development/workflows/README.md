@@ -4,6 +4,9 @@ This directory contains workflow definitions for the Synkra AIOX framework. Work
 
 ## Available Workflows
 
+### Master Pipeline
+- **idea-to-done-pipeline.yaml** - Pipeline completo Idea-to-Done: 29 steps + 7 gates, 7 fases (Research → Brief → Spec → Epic/Stories → Implementacao → Quality Paralela → Close)
+
 ### Development Workflows
 - **brownfield-discovery.yaml** - Comprehensive technical debt assessment for existing projects
 - **brownfield-fullstack.yaml** - Workflow for existing full-stack projects
