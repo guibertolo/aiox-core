@@ -8,7 +8,7 @@
 # - File types for categorization
 #
 version: 5.0.3
-generated_at: "2026-04-05T06:29:55.424Z"
+generated_at: "2026-04-05T06:38:55.010Z"
 generator: scripts/generate-install-manifest.js
 file_count: 1091
 files:
@@ -1221,7 +1221,7 @@ files:
     type: data
     size: 9575
   - path: data/entity-registry.yaml
-    hash: sha256:97df44eb0f7ea9e469704f969856a145fcf160d727c13b298d18221b5b0633c3
+    hash: sha256:156777181096f6f2c440c5f10fea3dbadd37bb74c9781f9460d229aa5e955250
     type: data
     size: 523447
   - path: data/learned-patterns.yaml
@@ -1401,9 +1401,9 @@ files:
     type: agent
     size: 19988
   - path: development/agents/ux/MEMORY.md
-    hash: sha256:94b361381986331e83f130450a8200dffb420abe39f44924bbb345a8d30dbbb7
+    hash: sha256:a31650b84f812bee3f9762615fafcfa6d53fba79f4eb3d33a4f12098697142ea
     type: agent
-    size: 6328
+    size: 6279
   - path: development/checklists/agent-quality-gate.md
     hash: sha256:46395b5c10794ca98321e4baaaaa1737485bec3f6bc3a616cf948478c0a1c644
     type: checklist
