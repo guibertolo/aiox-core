@@ -22,11 +22,14 @@
 - Conventional commits: `feat:`, `fix:`, `docs:`, `test:`, `chore:`, `refactor:`
 - Reference story: `feat: implement feature [Story NOG-18]`
 
-### Design/Effects Library
-- StringTune effects available at `docs/library/layouts/string-tune/` (12 efeitos)
-- Masonry grid, parallax, reveal-on-scroll, kinetic text, forms, glide, sequence
-- CSS-First approach — consultar @ux para integracao
+### Design/Effects Library — StringTune
+- 12 efeitos em `docs/library/layouts/string-tune/` (masonry, parallax, reveal, kinetic text, forms, glide, sequence)
+- CSS-First: animacoes via CSS (`--progress`, clip-path, scale) — JS so injeta custom properties
+- Ativacao via atributos HTML: `string="masonry|parallax|lazy"`, zero config JS
+- Init: `StringTune.StringTune.getInstance() → .use(StringTune.StringModulo) → .start(0)`
 - CDN: `https://unpkg.com/@fiddle-digital/string-tune@1.1.53/dist/index.js`
+- Grid base: 6 col mobile / 14 col desktop, easing `cubic-bezier(0.86, 0, 0.31, 1)`
+- Consultar @ux para decisoes de design, mas @dev pode integrar diretamente
 
 ### Common Gotchas
 - Windows paths: use forward slashes in code, bash shell not cmd

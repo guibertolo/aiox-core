@@ -45,14 +45,42 @@
 | Form 2 | `tutorial-12-form-2.html` | Variante de formulario com efeitos diferentes |
 | Xmas Tree | `tutorial-01-xmas-tree.html` | Decorativo/showcase (referencia tecnica) |
 
-**Como integrar:**
-1. Ler o HTML do efeito desejado em `docs/library/layouts/string-tune/`
-2. Extrair CSS relevante (custom properties, animations, grid)
-3. Adaptar ao projeto (cores via design tokens, fontes do projeto)
-4. Incluir StringTune CDN se precisar do JS: `<script src="https://unpkg.com/@fiddle-digital/string-tune@1.1.53/dist/index.js"></script>`
-5. CSS custom properties principais: `--progress`, `--spotlight-angle`, `--spotlight-distance`
-6. Grid system: `--g-columns` (6 mobile / 14 desktop), `--g-gap`, `--g-margin`
-7. Easing: `cubic-bezier(0.86, 0, 0.31, 1)` (principal), `cubic-bezier(0.35, 0.35, 0, 1)` (secundaria)
+**Como a lib funciona (conhecimento tecnico):**
+- Ativacao via atributos HTML, ZERO JS manual: `string="modulo"` no elemento
+- Modulos: `StringLazy`, `StringMasonry`, `StringParallax`, `StringInput`
+- Init: `const st = StringTune.StringTune.getInstance(); st.use(StringTune.StringModulo); st.start(0);`
+- `--progress` (0→1): CSS custom property injetada automaticamente conforme scroll
+- CSS faz TODA a animacao (clip-path, scale, translate, opacity) — JS so injeta `--progress`
+- Eventos JS: `stringTune.on('masonry:shuffle:start', callback)` para hooks
+
+**Atributos HTML por modulo:**
+- Lazy: `string="lazy" string-lazy="url"` — carrega imagens on-demand
+- Masonry: `string="masonry" string-masonry-cols="2|768:3|1024:4" string-masonry-mode="auto|manual"`
+- Masonry items: `string-masonry-position-time="1200" string-masonry-size-easing="cubic-bezier(0.69,0,0,1)"`
+- Parallax: `string="parallax" string-parallax="0.75"` (0=fixo, 1=normal, negativo=contra)
+- Reveal: `string string-repeat` no `<figure>` — classe `-inview` adicionada auto
+- Input/Form: `string-input="group:nome"` para validacao inline com estados `-error`/`-valid`
+
+**Padroes CSS reutilizaveis (extrair dos arquivos):**
+- Reveal: `clip-path: polygon(50% 50%,...) → polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)`
+- Progress scale: `scale: calc(0.5 + var(--progress) * 0.5)`
+- Footer shift: `opacity: calc(1 - var(--progress))` + `translate3d(0, calc(-50% + 50% * var(--progress)), 0)`
+- Word reveal: `--word-progress: clamp(0, (progress - word_turn) / word_step, 1)`
+- Sequence: estados `.-entering` (clip small) → `.-active` (full) → `.-leaving` (fade)
+
+**Grid base (presente em TODOS os arquivos):**
+- Mobile: 6 colunas, `--g-margin: calc(--g-gap * 2)`
+- Desktop (1024px+): 14 colunas, `--g-margin: calc(--g-gap * 4)`
+- Escala tipografica modular (ratio 1.25): `--mm` → `--m` → `--p` → `--h6..h0` → `--large`
+- Easing principal: `cubic-bezier(0.86, 0, 0.31, 1)`, secundaria: `cubic-bezier(0.35, 0.35, 0, 1)`
+
+**Como integrar num projeto:**
+1. Ler o HTML do efeito em `docs/library/layouts/string-tune/`
+2. Copiar o CSS relevante (custom properties, animacoes, grid positioning)
+3. Adaptar cores/fontes ao design system do projeto
+4. Incluir CDN: `<script src="https://unpkg.com/@fiddle-digital/string-tune@1.1.53/dist/index.js"></script>`
+5. Adicionar atributos `string="modulo"` nos elementos HTML
+6. Init JS minimo: `getInstance() → use(Modulo) → start(0)`
 
 **REGRA:** Quando criando sites/lojas/portfolios, SEMPRE consultar esta biblioteca antes de implementar animacoes do zero. Reutilizar > Adaptar > Criar.
 

@@ -8,7 +8,7 @@
 # - File types for categorization
 #
 version: 5.0.3
-generated_at: "2026-04-05T04:50:38.000Z"
+generated_at: "2026-04-05T06:04:57.728Z"
 generator: scripts/generate-install-manifest.js
 file_count: 1091
 files:
@@ -177,9 +177,9 @@ files:
     type: cli
     size: 5907
   - path: core-config.yaml
-    hash: sha256:7d52fd7d51f94fadd85a335ee34ef2781d2f6119512c03cf005265983027f8d8
+    hash: sha256:43ff551e6238bdfd254ab37d6fbd054cafc66ac14c85b3f2ac8d16ec5c97a934
     type: config
-    size: 3231
+    size: 3230
   - path: core/code-intel/code-intel-client.js
     hash: sha256:6c9a08a37775acf90397aa079a4ad2c5edcc47f2cfd592b26ae9f3d154d1deb8
     type: core
@@ -1221,9 +1221,9 @@ files:
     type: data
     size: 9575
   - path: data/entity-registry.yaml
-    hash: sha256:c18a2a2fe2c869048c823b4892feb22cf30767d8eeebb1df75a0dfe0ee88b7b4
+    hash: sha256:3d7c34e4109a157278a0ec869e2a2411af7a2546b1c5e74755ee203ef8267a8d
     type: data
-    size: 522786
+    size: 523447
   - path: data/learned-patterns.yaml
     hash: sha256:24ac0b160615583a0ff783d3da8af80b7f94191575d6db2054ec8e10a3f945dc
     type: data
@@ -1349,9 +1349,9 @@ files:
     type: agent
     size: 24483
   - path: development/agents/dev/MEMORY.md
-    hash: sha256:a963fde233df65aee99f97a2fbd8468bc45349acc82f780e362e8e24bdc65f7d
+    hash: sha256:badd300ad7bd4d3eb87938fb8e19a559631fc8b2491216d809d59fdcbe7714f5
     type: agent
-    size: 2809
+    size: 3156
   - path: development/agents/devops.md
     hash: sha256:a41d02fe38b086211f4c1985b8da5e4624e21767466325032aeb9b4899f8c6b0
     type: agent
@@ -1401,9 +1401,9 @@ files:
     type: agent
     size: 19988
   - path: development/agents/ux/MEMORY.md
-    hash: sha256:009c70736d070f4405b5c456f17986fb2e43c13e1cda85ca2efc5744ef31aa8f
+    hash: sha256:7337155addfd8fb89b00e1f3b1815e3a582637c85085e11512d30c5d7f214707
     type: agent
-    size: 3415
+    size: 5232
   - path: development/checklists/agent-quality-gate.md
     hash: sha256:46395b5c10794ca98321e4baaaaa1737485bec3f6bc3a616cf948478c0a1c644
     type: checklist
